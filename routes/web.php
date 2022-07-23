@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ItemsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,10 +19,19 @@ Route::get('/dashbord', function () {
     return view('dashbord');
 });
 
+Route::get('/', function () {
+    return view('index');
+})->name('index');;
+
+
 Route::get('/brand',[BrandController::class,'indexOfBrand'])->name('brand_index');
 Route::get('/brand_list',[BrandController::class,'brandList']);
 Route::get('brand-edit/{id}',[BrandController::class,'brandDetails']);
 Route::post('/brand-data',[BrandController::class,'addOrupdate']);
 Route::post('delete_brand',[BrandController::class,'deleteBrand']);
+
+
+Route::get('/itam',[ItemsController::class,'indexOfBrand'])->name('itam_index');
+Route::get('/item-list',[ItemsController::class,'itemList']);
 
 

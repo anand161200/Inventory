@@ -1,21 +1,27 @@
 @extends('dashbord')
 @section('content')
-    <div class="container">
-        <div class="card mt-5">
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Brands</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="{{ route('index') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active">Brand</li>
+        </ol>
+        <div class="card mb-4">
             <div class="card-header">
-               <h3>Brand List</h3>
-            </div>
-            <div class="card-body">
-                <div class="d-flex bd-highlight mb-2 mt-3">
+                <div class="d-flex bd-highlight">
                     <div class="me-auto bd-highlight">
+                        <i class="fas fa-table me-1"></i>
+                        Brand List
                     </div>
                     <div class="bd-highlight">
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" onClick="openmodel()"><i class="fa fa-plus"></i></button>
+                        <button type="button" class="btn btn-primary btn-sm" onClick="openmodel()"><i class="fa fa-plus"></i></button>
                     </div>
                 </div>
+            </div>
+            <div class="card-body">
                 <!-- Modal -->
-                <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel"      aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -37,21 +43,20 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <table class="table text-center table-bordered">
-                        <thead>
-                            <tr>
-                                <th scope="col">Name</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="brand_list">
-                        </tbody>
-                    </table>
-                </div>
+                <table class="table table-bordered">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="brand_list">
+                    </tbody>
+                </table> 
             </div>
         </div>
     </div>
+</main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="text/javascript">
