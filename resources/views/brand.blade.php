@@ -82,6 +82,7 @@
                 reload();
             })
         }
+
         function reload()
         {
             brand_list.innerHTML = "";
