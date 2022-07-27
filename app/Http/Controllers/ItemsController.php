@@ -33,16 +33,34 @@ class ItemsController extends Controller
 
     public function storeData(Request $request)
     {
-       
+        $request->validate(
+            [
+                'brand_id'=>'required',
+                'all_item.*.item_name'=>'required',
+                'all_item.*.item_price'=>'required',
+                'all_item.*.item_stock'=>'required',
+            ],
+            [
+                'brand_id.required'=>'The brand name field is required.',
+                'all_item.*.item_name.required'=>'The item name field is required.',
+                'all_item.*.item_price.required'=>'The item price field is required.',
+                'all_item.*.item_stock.required'=>'The item stock field is required.'
+            ]
+        );
+
         foreach($request->all_item as $data)
         {
             $item_data = new Items();
-            $item_data->brand_id = $data['item_select'];
+            $item_data->brand_id = $request->brand_id;
             $item_data->name = $data['item_name'];
             $item_data->price = $data['item_price'];
             $item_data->stock = $data['item_stock'];
             $item_data->save();
         }
+
+        return response()->json([
+            'Record add  successfully'  
+        ],200);
         
     }
 }

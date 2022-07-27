@@ -35,6 +35,7 @@
                                     <option value="{{ $val->id}}">{{ $val->name}} </option>
                                     @endforeach
                                 </select>
+                                <span class="text-danger" id="brand_id"></span>
                                 <div class="mt-4">
                                     <button type="button" class="btn btn-success mb-2" onclick="addRow()">+</button>
                                     <table class="table text-center table-bordered">
@@ -46,7 +47,7 @@
                                                 <th scope="col">action</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="add_row">
+                                        <tbody id="item_rows">
                                         </tbody>
                                     </table>
                                 </div>
@@ -80,12 +81,16 @@
 
     let item_list=document.getElementById('item_list');
     let myModal = new bootstrap.Modal(document.getElementById("myModal"), {});
-    let add_inputfield = document.getElementById("add_row");
+    let item_rows = document.getElementById("item_rows");
 
     let select_brand = document.getElementById("brand_select");
+     // ERROR MSG
+    let brandname_error=document.getElementById("brand_id")
+    
     let all_item='';
     let counter=0;
     let result=[];
+    let error={};
 
 
     window.onload=function() {
@@ -110,11 +115,12 @@
             let table = `<tr>
                 <td>${key}</td>
                 <td>`;
-                all_item[key].forEach(function(item) {
-                    table += `<span class="badge bg-secondary" style="margin-right: 10px;">
+                    all_item[key].forEach(function(item) {
+                        table += `<span class="badge bg-secondary" style="margin-right: 10px;">
                             ${item.name}
-                        </span>`;
-                });
+                            </span>`;
+
+                    });
             table +=`</td>
                 <td>
                     <button class="btn btn-success btn-sm"onclick="openmodel()"><i class="fa fa-edit"></i></button>
@@ -127,8 +133,10 @@
 
     function openmodel()
     {
+        brandname_error.innerHTML='';
         myModal.show();
         reset();
+        addRow();
     }
 
     function closemodel(){
@@ -137,53 +145,77 @@
 
     function addRow()
     {
-        add_inputfield.innerHTML +=
+        item_rows.innerHTML +=
         `<tr class="table_raw" data-rawindex="${counter}">
-            <td><input type="text" id="name[${counter}]" class="form-control"></td>
-            <td><input type="text" id="price[${counter}]" class="form-control"></td>
-            <td><input type="text" id="stock[${counter}]"class="form-control"></td>
-            <td><button class="btn btn-danger btn-sm">x</button></td>
+            <td><input type="text" id="name[${counter}]" class="form-control">
+                <span class="text-danger" id="all_item.${counter}.item_name"></span>
+            </td>
+            <td><input type="text" id="price[${counter}]" class="form-control">
+                <span class="text-danger" id="all_item.${counter}.item_price"></span>
+            </td>
+            <td><input type="text" id="stock[${counter}]"class="form-control">
+                <span class="text-danger" id="all_item.${counter}.item_stock"></span>
+            </td>
+            <td><button class="btn btn-danger btn-sm" onclick="removeRaw(this)">x</button></td>
         </tr>`
         counter++;
     }
 
-    function reset()
+    function removeRaw(btn)
     {
-        add_inputfield.innerHTML ='';
-        select_brand.value='';
-        name.value='';
-        price.value='';
-        stock.value='';
-        result='';
+        let row = btn.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        
     }
 
+    function reset()
+    {
+        item_rows.innerHTML ='';
+        select_brand.value='';
+        counter=0;
+        result=[];
+    }
+    
     function FromSubmit()
     {
         let table_raws= document.querySelectorAll('.table_raw');
+        result=[];
 
         table_raws.forEach(function(raw) {
-    
+
         let name= document.getElementById(`name[${raw.dataset.rawindex}]`);
         let price= document.getElementById(`price[${raw.dataset.rawindex}]`);
         let stock= document.getElementById(`stock[${raw.dataset.rawindex}]`);
 
             result.push({
-            'item_select':select_brand.value,
-            'item_name' : name.value,
-            'item_price':price.value,
-            'item_stock' :stock.value 
+                'item_name' : name.value,
+                'item_price':price.value,
+                'item_stock' :stock.value 
             })
 
         });
 
         axios.post('/store-data',{
-         'all_item': result 
+            'brand_id':select_brand.value,
+            'all_item': result 
         })
         .then(function (response) {
             closemodel();
             recall();
         })
+        .catch(function (error) {
+            error = error.response.data.errors;
+            Object.keys(error).forEach(function(key) { 
+            document.getElementById(key).innerHTML=error[key];
+        
+            }); 
+        })     
 
+    }
+
+    function remove(id)
+    {
+        console.log(id);
     }
         
             
