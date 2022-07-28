@@ -75,9 +75,11 @@
         </div>
     </div>
 </main>
+
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script type="text/javascript">
+
 
     let item_list=document.getElementById('item_list');
     let myModal = new bootstrap.Modal(document.getElementById("myModal"), {});
@@ -89,7 +91,7 @@
     
     let all_item='';
     let counter=0;
-    let result=[];
+    let result={};
     let error={};
 
 
@@ -109,6 +111,7 @@
     
     function reload()
     {
+        let brand_id ='';
         // console.log(@json($brand))
         item_list.innerHTML="";
         Object.keys(all_item).forEach(function(key) {
@@ -119,53 +122,73 @@
                         table += `<span class="badge bg-secondary" style="margin-right: 10px;">
                             ${item.name}
                             </span>`;
-
+                            brand_id=item.brand_id
                     });
             table +=`</td>
                 <td>
-                    <button class="btn btn-success btn-sm"onclick="openmodel()"><i class="fa fa-edit"></i></button>
-                    <button class="btn btn-danger btn-sm"onclick="remove()"><i class="fa fa-trash"></i></button>
+                    <button class="btn btn-success btn-sm" onclick="openmodel('${brand_id}')"><i class="fa fa-edit"></i></button>
+                    <button class="btn btn-danger btn-sm" onclick="removeItemList('${brand_id}')"><i class="fa fa-trash"></i></button>
                 </td>
             </tr>`;
             item_list.innerHTML += table;
+       
         });
     }
 
-    function openmodel()
+    function openmodel( brand_id = '')
     {
-        brandname_error.innerHTML='';
-        myModal.show();
+        errorReset();
         reset();
+        if(brand_id !== '')
+        {
+            axios.get(`/item-details/${brand_id}`)
+            .then(function (response) {
+                    let item_data=response.data.details;
+                    item_data.forEach(function(data){
+                        select_brand.value = data.brand_id;
+                    })
+                     
+                })
+        }
+        myModal.show();
         addRow();
     }
 
-    function closemodel(){
+    function closemodel() {
         myModal.hide();
     }
 
     function addRow()
     {
         item_rows.innerHTML +=
-        `<tr class="table_raw" data-rawindex="${counter}">
+        `<tr class="table_raw" id="raw_${counter}" data-rawindex="${counter}">
             <td><input type="text" id="name[${counter}]" class="form-control">
-                <span class="text-danger" id="all_item.${counter}.item_name"></span>
+                <span class="text-danger err_msg" id="all_item.${counter}.item_name"></span>
             </td>
             <td><input type="text" id="price[${counter}]" class="form-control">
-                <span class="text-danger" id="all_item.${counter}.item_price"></span>
+                <span class="text-danger err_msg" id="all_item.${counter}.item_price"></span>
             </td>
-            <td><input type="text" id="stock[${counter}]"class="form-control">
-                <span class="text-danger" id="all_item.${counter}.item_stock"></span>
+            <td><input type="text" id="stock[${counter}]"class="form-control ">
+                <span class="text-danger err_msg" id="all_item.${counter}.item_stock"></span>
             </td>
-            <td><button class="btn btn-danger btn-sm" onclick="removeRaw(this)">x</button></td>
+            <td><button type="button"  class="btn btn-danger btn-sm" onclick="removeRaw(${counter})">x</button></td>
         </tr>`
         counter++;
     }
 
-    function removeRaw(btn)
+    function removeRaw(counter_number)
+    { 
+       document.getElementById(`raw_${counter_number}`).remove();
+    }
+
+    function errorReset()
     {
-        let row = btn.parentNode.parentNode;
-            row.parentNode.removeChild(row);
-        
+        brandname_error.innerHTML='';
+        let all_error=document.querySelectorAll('.err_msg');
+
+        all_error.forEach(function(element){
+            element.innerHTML = ""
+        })
     }
 
     function reset()
@@ -173,13 +196,15 @@
         item_rows.innerHTML ='';
         select_brand.value='';
         counter=0;
-        result=[];
+        result={};
     }
-    
+
     function FromSubmit()
     {
+        errorReset();
+
         let table_raws= document.querySelectorAll('.table_raw');
-        result=[];
+        result={};
 
         table_raws.forEach(function(raw) {
 
@@ -187,11 +212,11 @@
         let price= document.getElementById(`price[${raw.dataset.rawindex}]`);
         let stock= document.getElementById(`stock[${raw.dataset.rawindex}]`);
 
-            result.push({
+            result[raw.dataset.rawindex] = {
                 'item_name' : name.value,
                 'item_price':price.value,
                 'item_stock' :stock.value 
-            })
+            }
 
         });
 
@@ -205,19 +230,21 @@
         })
         .catch(function (error) {
             error = error.response.data.errors;
-            Object.keys(error).forEach(function(key) { 
-            document.getElementById(key).innerHTML=error[key];
-        
+            Object.keys(error).forEach(function(key) {
+                document.getElementById(key).innerHTML=error[key];
             }); 
         })     
 
     }
 
-    function remove(id)
+    function removeItemList(brand_id)
     {
-        console.log(id);
+        axios.get(`/item-delete/${brand_id}`)
+        .then(function (response) {
+                recall();
+            })
+        //console.log(brand_id);
     }
-        
-            
+           
 </script>
 @endsection

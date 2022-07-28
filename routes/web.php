@@ -34,6 +34,8 @@ Route::post('delete_brand',[BrandController::class,'deleteBrand']);
 Route::get('/itam',[ItemsController::class,'indexOfBrand'])->name('itam_index');
 Route::get('/item-list',[ItemsController::class,'itemList']);
 Route::post('/store-data',[ItemsController::class,'storeData']);
+Route::get('/item-details/{id}',[ItemsController::class,'itemDetails']);
+Route::get('/item-delete/{id}',[ItemsController::class,'itemDelete']);
 
 
 

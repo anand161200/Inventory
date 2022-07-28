@@ -63,4 +63,24 @@ class ItemsController extends Controller
         ],200);
         
     }
+
+    function itemDetails($id)
+    {
+       $all_item = Items::where('brand_id', $id)->get();
+       
+        return response()->json([
+            'details'  => $all_item
+        ],200);
+
+    }
+
+    function itemDelete($id)
+    {
+        $delete_item = Items::where('brand_id', $id)->get();
+
+        foreach($delete_item as $data)
+        {
+           $data-> delete();
+        }
+    }
 }
