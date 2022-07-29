@@ -11,7 +11,7 @@
             <div class="card-header">
                 <div class="d-flex bd-highlight">
                     <div class="me-auto bd-highlight">
-                        <i class="fas fa-table me-1"></i>
+                        <i class="fa fa-mobile me-1"></i>
                         Item List
                     </div>
                     <div class="bd-highlight">
@@ -38,7 +38,7 @@
                                 <span class="text-danger" id="brand_id"></span>
                                 <div class="mt-4">
                                     <button type="button" class="btn btn-success mb-2" onclick="addRow()">+</button>
-                                    <table class="table text-center table-bordered">
+                                    <table class="table table-bordered">
                                         <thead>
                                             <tr>
                                                 <th scope="col">Name</th>
@@ -75,7 +75,7 @@
         </div>
     </div>
 </main>
-
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script type="text/javascript">
@@ -90,6 +90,7 @@
     let brandname_error=document.getElementById("brand_id")
     
     let all_item='';
+    let item_id= '';
     let counter=0;
     let result={};
     let error={};
@@ -124,7 +125,7 @@
                             </span>`;
                             brand_id=item.brand_id
                     });
-            table +=`</td>
+                table +=`</td>
                 <td>
                     <button class="btn btn-success btn-sm" onclick="openmodel('${brand_id}')"><i class="fa fa-edit"></i></button>
                     <button class="btn btn-danger btn-sm" onclick="removeItemList('${brand_id}')"><i class="fa fa-trash"></i></button>
@@ -143,37 +144,60 @@
         {
             axios.get(`/item-details/${brand_id}`)
             .then(function (response) {
-                    let item_data=response.data.details;
-                    item_data.forEach(function(data){
-                        select_brand.value = data.brand_id;
-                    })
-                     
-                })
+            let item_data=response.data.details;
+                item_data.forEach(function(data) {
+                    select_brand.value = data.brand_id;
+                    addRow(data);
+                })     
+            })
+        }
+        else
+        {
+            addRow();
         }
         myModal.show();
-        addRow();
     }
 
     function closemodel() {
         myModal.hide();
     }
 
-    function addRow()
+    function addRow(data = null)
     {
-        item_rows.innerHTML +=
-        `<tr class="table_raw" id="raw_${counter}" data-rawindex="${counter}">
-            <td><input type="text" id="name[${counter}]" class="form-control">
-                <span class="text-danger err_msg" id="all_item.${counter}.item_name"></span>
-            </td>
-            <td><input type="text" id="price[${counter}]" class="form-control">
-                <span class="text-danger err_msg" id="all_item.${counter}.item_price"></span>
-            </td>
-            <td><input type="text" id="stock[${counter}]"class="form-control ">
-                <span class="text-danger err_msg" id="all_item.${counter}.item_stock"></span>
-            </td>
-            <td><button type="button"  class="btn btn-danger btn-sm" onclick="removeRaw(${counter})">x</button></td>
-        </tr>`
-        counter++;
+        if(data !== null)
+        {
+            item_rows.innerHTML +=
+            `<tr class="table_raw" id="raw_${counter}" data-rawindex="${counter}">
+                <td><input type="text" id="name[${counter}]" value="${data.name}" class="form-control">
+                    <span class="text-danger err_msg" id="all_item.${counter}.item_name"></span>
+                </td>
+                <td><input type="text" id="price[${counter}]" value="${data.price}" class="form-control">
+                    <span class="text-danger err_msg" id="all_item.${counter}.item_price"></span>
+                </td>
+                <td><input type="text" id="stock[${counter}]" value="${data.stock}" class="form-control">
+                    <span class="text-danger err_msg" id="all_item.${counter}.item_stock"></span>
+                </td>
+                <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRaw(${counter})">x</button></td>
+            </tr>
+            <td><input type="hidden" id="id[${counter}]" value="${data.id}" class="form-control"></td>`
+            counter++;
+        }
+        else{
+            item_rows.innerHTML +=
+            `<tr class="table_raw" id="raw_${counter}" data-rawindex="${counter}">
+                <td><input type="text" id="name[${counter}]" class="form-control">
+                    <span class="text-danger err_msg" id="all_item.${counter}.item_name"></span>
+                </td>
+                <td><input type="text" id="price[${counter}]" class="form-control">
+                    <span class="text-danger err_msg" id="all_item.${counter}.item_price"></span>
+                </td>
+                <td><input type="text" id="stock[${counter}]"class="form-control">
+                    <span class="text-danger err_msg" id="all_item.${counter}.item_stock"></span>
+                </td>
+                <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRaw(${counter})">x</button></td>
+            </tr>`
+            counter++;
+        }
     }
 
     function removeRaw(counter_number)
@@ -202,12 +226,13 @@
     function FromSubmit()
     {
         errorReset();
-
+    
         let table_raws= document.querySelectorAll('.table_raw');
         result={};
 
         table_raws.forEach(function(raw) {
-
+        
+        let id= document.getElementById(`id[${raw.dataset.rawindex}]`);
         let name= document.getElementById(`name[${raw.dataset.rawindex}]`);
         let price= document.getElementById(`price[${raw.dataset.rawindex}]`);
         let stock= document.getElementById(`stock[${raw.dataset.rawindex}]`);
@@ -217,12 +242,13 @@
                 'item_price':price.value,
                 'item_stock' :stock.value 
             }
-
+              console.log(id.value);
         });
 
         axios.post('/store-data',{
             'brand_id':select_brand.value,
-            'all_item': result 
+            'all_item': result ,
+            'id' : item_id,
         })
         .then(function (response) {
             closemodel();
@@ -234,16 +260,32 @@
                 document.getElementById(key).innerHTML=error[key];
             }); 
         })     
-
     }
 
     function removeItemList(brand_id)
     {
-        axios.get(`/item-delete/${brand_id}`)
-        .then(function (response) {
-                recall();
-            })
-        //console.log(brand_id);
+        Swal.fire({
+                title: 'Are you sure want to delete ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.get(`/item-delete/${brand_id}`)
+                    .then(function (response) {
+                    recall();
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: ' delete successfully',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })       
+                })  
+            }
+        })
     }
            
 </script>
