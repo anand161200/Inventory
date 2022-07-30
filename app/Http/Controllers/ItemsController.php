@@ -33,8 +33,6 @@ class ItemsController extends Controller
 
     public function storeData(Request $request)
     {
-       dd($request->id);
-        
         $request->validate(
             [
                 'brand_id'=>'required',
@@ -49,27 +47,20 @@ class ItemsController extends Controller
                 'all_item.*.item_stock.required'=>'The item stock field is required.'
             ]
         );
-            // foreach($request->all_item as $data)
-            // {
-            //     $item_data = new Items();
-            //     $item_data->brand_id = $request->brand_id;
-            //     $item_data->name = $data['item_name'];
-            //     $item_data->price = $data['item_price'];
-            //     $item_data->stock = $data['item_stock'];
-            //     $item_data->save();
-            // }
+            foreach($request->all_item as $data)
+            {
+                $item_data = $data['item_id'] !== null ? Items::find($data['item_id']) : new Items();
+                $item_data->fill([
+                    'brand_id'=>$request->brand_id,
+                    'name'=>$data['item_name'],
+                    'price'=>$data['item_price'],
+                    'stock'=>$data['item_stock'],
+                ])->save();
+            }
 
         return response()->json([
             'Record add  successfully'  
-        ],200);
-
-    //    $item_data = $request->id !== null ? Items::find($request->id) : new Items();
-    //     $item_data->fill([
-    //         'name'=>$data['item_name'],
-    //         'price'=>$data['item_price'],
-    //         'stock'=>$data['item_stock'],
-    //     ])->save();
-        
+        ],200); 
     }
 
     function itemDetails($id)

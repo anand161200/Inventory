@@ -90,7 +90,6 @@
     let brandname_error=document.getElementById("brand_id")
     
     let all_item='';
-    let item_id= '';
     let counter=0;
     let result={};
     let error={};
@@ -195,7 +194,8 @@
                     <span class="text-danger err_msg" id="all_item.${counter}.item_stock"></span>
                 </td>
                 <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRaw(${counter})">x</button></td>
-            </tr>`
+            </tr>
+            <td><input type="hidden" id="id[${counter}]" value="" class="form-control"></td>`
             counter++;
         }
     }
@@ -238,17 +238,16 @@
         let stock= document.getElementById(`stock[${raw.dataset.rawindex}]`);
 
             result[raw.dataset.rawindex] = {
+                'item_id' : id.value,
                 'item_name' : name.value,
                 'item_price':price.value,
                 'item_stock' :stock.value 
             }
-              console.log(id.value);
         });
 
         axios.post('/store-data',{
             'brand_id':select_brand.value,
-            'all_item': result ,
-            'id' : item_id,
+            'all_item': result,
         })
         .then(function (response) {
             closemodel();
@@ -260,7 +259,7 @@
                 document.getElementById(key).innerHTML=error[key];
             }); 
         })     
-    }
+     }
 
     function removeItemList(brand_id)
     {
