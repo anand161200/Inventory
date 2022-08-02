@@ -31,18 +31,29 @@ class ItemsController extends Controller
         ],200);
     }
 
-    public function storeData(Request $request)
+    function itemDetails($id)
+    {
+       $all_item = Items::where('brand_id', $id)->get();
+       
+        return response()->json([
+            'details'  => $all_item
+        ],200);
+
+    }
+
+    public function storeUpadte(Request $request)
     {
         $request->validate(
             [
                 'brand_id'=>'required',
-                'all_item.*.item_name'=>'required',
+                'all_item.*.item_name'=>'required|distinct',
                 'all_item.*.item_price'=>'required',
                 'all_item.*.item_stock'=>'required',
             ],
             [
                 'brand_id.required'=>'The brand name field is required.',
                 'all_item.*.item_name.required'=>'The item name field is required.',
+                'all_item.*.item_name.distinct'=>'The item name field is duplicate.',
                 'all_item.*.item_price.required'=>'The item price field is required.',
                 'all_item.*.item_stock.required'=>'The item stock field is required.'
             ]
@@ -61,16 +72,6 @@ class ItemsController extends Controller
         return response()->json([
             'Record add  successfully'  
         ],200); 
-    }
-
-    function itemDetails($id)
-    {
-       $all_item = Items::where('brand_id', $id)->get();
-       
-        return response()->json([
-            'details'  => $all_item
-        ],200);
-
     }
 
     function itemDelete($id)

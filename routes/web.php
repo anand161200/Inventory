@@ -33,9 +33,14 @@ Route::post('delete_brand',[BrandController::class,'deleteBrand']);
 
 Route::get('/itam',[ItemsController::class,'indexOfBrand'])->name('itam_index');
 Route::get('/item-list',[ItemsController::class,'itemList']);
-Route::post('/store-data',[ItemsController::class,'storeData']);
+Route::post('/store-update',[ItemsController::class,'storeUpadte']);
 Route::get('/item-details/{id}',[ItemsController::class,'itemDetails']);
-Route::get('/item-delete/{id}',[ItemsController::class,'itemDelete']);
+Route::get('/delete-item/{id}',[ItemsController::class,'itemDelete']);
+
+
+Route::get('/JQ-validation', function () {
+    return view('jq_validation');
+});
 
 
 
