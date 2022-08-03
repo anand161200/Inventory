@@ -48,5 +48,9 @@ class BrandController extends Controller
     {
         $deleterecord=Brand::find($request->brand_id);
         $deleterecord->delete();
+
+        return response()->json([
+            'data' => $deleterecord 
+        ],200);
     }
 }

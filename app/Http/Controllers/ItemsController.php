@@ -34,9 +34,11 @@ class ItemsController extends Controller
     function itemDetails($id)
     {
        $all_item = Items::where('brand_id', $id)->get();
+       $brand_name = Brand::find($id);
        
         return response()->json([
-            'details'  => $all_item
+            'details'  => $all_item,
+             'brand'   =>$brand_name
         ],200);
 
     }
@@ -70,17 +72,23 @@ class ItemsController extends Controller
             }
 
         return response()->json([
-            'Record add  successfully'  
+            'Record add and update successfully'  
         ],200); 
     }
 
     function itemDelete($id)
     {
+        $brand_name = Brand::find($id);
+    
         $delete_item = Items::where('brand_id', $id)->get();
 
         foreach($delete_item as $data)
         {
            $data-> delete();
         }
+
+        return response()->json([
+            'item_data' =>  $brand_name
+        ],200);
     }
 }

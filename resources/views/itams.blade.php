@@ -3,8 +3,8 @@
 <main>
     <style>
         .error {
-        color: #F00;
-        background-color: #FFF;
+            color: #F00;
+            background-color: #FFF;
         }
     </style>
     <div class="container-fluid px-4">
@@ -105,9 +105,7 @@
     let counter=0;
     let result={};
     let error={};
-    let rules_obj = {};
     
-
 
     window.onload = function() {
         recall(); 
@@ -115,17 +113,7 @@
 
     let validation = $('#frm').validate({
         errorClass: 'error',
-        rules:{
-            name: {
-                'required':true
-            },
-            price: {
-                'required':true
-            },
-            stock: {
-                'required':true
-            },
-        }, 
+        rules:{}, 
     });
 
 
@@ -173,12 +161,15 @@
             axios.get(`/item-details/${brand_id}`)
             .then(function (response) {
             let item_data=response.data.details;
+            let brand_data=response.data.brand;
+
                 item_data.forEach(function(data) {
-                    title_text.innerHTML=`Update`;
-                    button_text.innerHTML='Update';
                     select_brand.value = data.brand_id;
                     addRow(data);
-                })     
+                })  
+                
+                title_text.innerHTML=`${brand_data.name} :-Update`;
+                button_text.innerHTML='Update';   
             })
         }
         else
@@ -230,6 +221,7 @@
             </tr>
             <td><input type="hidden" id="id[${counter}]" value="" class="form-control"></td>`
             
+              // Jquery Front-end validation add
             $(document.getElementById(`name[${counter}]`)).rules('add', {required: true});
 
             $(document.getElementById(`price[${counter}]`)).rules('add', {required: true});
@@ -237,12 +229,21 @@
             $(document.getElementById(`stock[${counter}]`)).rules('add', {required: true});
 
             counter++;
+
+            // console.log(validation.settings.rules);
         }
     }
 
     function removeRaw(counter_number)
     { 
-       document.getElementById(`raw_${counter_number}`).remove();
+         // Jquery Front-end validation remove
+        $(document.getElementById(`name[${counter_number}]`)).rules('remove');
+        $(document.getElementById(`price[${counter_number}]`)).rules('remove');
+        $(document.getElementById(`stock[${counter_number}]`)).rules('remove');
+
+        document.getElementById(`raw_${counter_number}`).remove();
+
+        // console.log(validation.settings.rules);
     }
 
     function errorReset()
@@ -269,7 +270,6 @@
 
         if(validation.form())
         {
-    
             let table_raws = document.querySelectorAll('.table_raw');
             result ={};
 
@@ -294,6 +294,13 @@
             })
             .then(function (response) {
                 closemodel();
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
                 recall();
             })
             .catch(function (error) {
@@ -302,7 +309,6 @@
                     document.getElementById(key).innerHTML = error[key];
                 }); 
             })  
-        
         }
     }
 
@@ -319,15 +325,16 @@
                 if (result.isConfirmed) {
                     axios.get(`/delete-item/${brand_id}`)
                     .then(function (response) {
+                    let data_item = response.data.item_data;
                     recall();
                     Swal.fire({
                         position: 'top-end',
                         icon: 'success',
-                        title: ' delete successfully',
+                        title: `${data_item.name} delete successfully`,
                         showConfirmButton: false,
                         timer: 1500
                     })       
-                })  
+                })
             }
         })
     }

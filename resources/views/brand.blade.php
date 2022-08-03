@@ -44,7 +44,7 @@
                                 </form>
                             </div>
                             <div class="modal-footer d-flex justify-content-center">
-                                <button type="submit" onClick="FromSubmit()" value="" class="btn btn-primary" id="button_text">Submit</button>
+                                <button type="submit" onClick="FromSubmit()" value="" class="btn btn-primary" id="button_text"></button>
                             </div>
                         </div>
                     </div>
@@ -66,6 +66,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="text/javascript">
@@ -74,6 +76,10 @@
         let myModal = new bootstrap.Modal(document.getElementById("myModal"), {});
         let brand_name = document.getElementById('name');
         let name_error = document.getElementById('brand');
+
+        // Title tax
+        let title_text = document.getElementById('title_text');
+        let button_text = document.getElementById('button_text');
         let all_brand='';
         let brand_id='';
         let error={};
@@ -133,11 +139,16 @@
                     let data = response.data.details;
                     brand_name.value = data.name;
                     brand_id = data.id;
+                    title_text.innerHTML=`${data.name} :-Update`;
+                    button_text.innerHTML='Update';
                 })
             }
             else
             {
+                brand_id ='';
                 brand_name.value ='';
+                title_text.innerHTML = "ADD";
+                button_text.innerHTML = 'Submit';
             }
             myModal.show();
         }
@@ -148,6 +159,7 @@
 
         function FromSubmit()
         { 
+            // console.log(brand_id);
             if(validation.form())
             {
                 axios.post('/brand-data',{
@@ -156,6 +168,13 @@
                 })
                 .then(function (response) {
                     closemodel();
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: `${(brand_id = '') ? 'Add successfully' : 'Update Successfully'}`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }) 
                     recall();
                 })
                 .catch(function (error) {
@@ -169,12 +188,42 @@
 
         function remove(id)
         {
-            axios.post('/delete_brand',{ 
+
+            Swal.fire({
+                title: 'Are you sure want to delete ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.post('/delete_brand',{ 
                         'brand_id' : id          
                     })
-            .then(function (response) {
-                recall();
+                    .then(function (response) {
+                    let data_item = response.data.data; 
+                        recall();
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: `${data_item.name} delete successfully`,
+                            showConfirmButton: false,
+                            timer: 1500
+                        })       
+                    }) 
+                    .catch(function (error) { 
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: ' Oops',
+                            showConfirmButton: false,
+                            text: 'This Brand is used in item!',
+                            timer: 1500
+                        }) 
+                    })   
+                }
             })
         }
-    </script>
+    </script>  
 @endsection
