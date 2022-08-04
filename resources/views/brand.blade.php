@@ -159,7 +159,7 @@
 
         function FromSubmit()
         { 
-            // console.log(brand_id);
+            //console.log(brand_id);
             if(validation.form())
             {
                 axios.post('/brand-data',{

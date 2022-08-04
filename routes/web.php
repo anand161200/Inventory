@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ItemsController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +22,7 @@ Route::get('/dashbord', function () {
 
 Route::get('/', function () {
     return view('index');
-})->name('index');;
+})->name('index');
 
 
 Route::get('/brand',[BrandController::class,'indexOfBrand'])->name('brand_index');
@@ -37,10 +38,21 @@ Route::post('/store-update',[ItemsController::class,'storeUpadte']);
 Route::get('/item-details/{id}',[ItemsController::class,'itemDetails']);
 Route::get('/delete-item/{id}',[ItemsController::class,'itemDelete']);
 
+  // client side
 
-Route::get('/JQ-validation', function () {
-    return view('jq_validation');
+  Route::get('/user_layout', function () {
+    return view('client_side.include.user_layout');
 });
+
+Route::get('/home',[UserController::class,'home'])->name('home');
+Route::get('/checkout',[UserController::class,'checkout'])->name('checkout');
+Route::get('/cart',[UserController::class,'cart'])->name('cart');
+Route::get('/product',[UserController::class,'product'])->name('product');
+
+Route::get('/shop',[ItemsController::class,'shop'])->name('shop');
+
+
+
 
 
 

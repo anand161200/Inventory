@@ -11,18 +11,20 @@ class ItemsController extends Controller
 {
     public function indexOfBrand()
     {
-        return view('itams')->with(['brand'=> Brand::all()]);
+        return view('itams')->with([
+            'brand'=> Brand::all()
+        ]);
     }
 
     public function itemList()
     {
         $brand_item = DB::table('items')
-        ->select([
-            'items.*',
-            DB::raw("brands.name AS brand_name")
-        ])
-        ->join('brands', 'items.brand_id', '=', 'brands.id')
-        ->get();
+            ->select([
+                'items.*',
+                DB::raw("brands.name AS brand_name")
+            ])
+            ->join('brands', 'items.brand_id', '=', 'brands.id')
+            ->get();
 
         $group_data = $brand_item->groupBy('brand_name');
 
@@ -91,4 +93,24 @@ class ItemsController extends Controller
             'item_data' =>  $brand_name
         ],200);
     }
-}
+
+       // Client side data
+
+       public function shop()
+       {
+            $item = DB::table('items')
+            ->select([
+                'items.*',
+                DB::raw("brands.name AS brand_name")
+            ])
+            ->join('brands', 'items.brand_id', '=', 'brands.id')
+            ->get();
+
+           return view('client_side.shop')->with(
+            ['item_list' => $item,
+            'brand'=> Brand::all()
+            ]); 
+       }
+
+
+}       
