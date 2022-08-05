@@ -11,15 +11,9 @@ class UserController extends Controller
         return view('client_side.home');
     }
 
-   
     public function checkout()
     {
         return view('client_side.checkout'); 
-    }
-
-    public function cart()
-    {
-        return view('client_side.cart'); 
     }
 
     public function product()
@@ -27,6 +21,4 @@ class UserController extends Controller
         return view('client_side.product'); 
     }
 
-
-    
 }

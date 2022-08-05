@@ -96,21 +96,27 @@ class ItemsController extends Controller
 
        // Client side data
 
-       public function shop()
-       {
-            $item = DB::table('items')
-            ->select([
-                'items.*',
-                DB::raw("brands.name AS brand_name")
-            ])
-            ->join('brands', 'items.brand_id', '=', 'brands.id')
-            ->get();
+    public function shop()
+    {
+        $item = DB::table('items')
+        ->select([
+            'items.*',
+            DB::raw("brands.name AS brand_name")
+        ])
+        ->join('brands', 'items.brand_id', '=', 'brands.id')
+        ->get();
 
-           return view('client_side.shop')->with(
-            ['item_list' => $item,
+        return view('client_side.shop')->with([   
+            'item_list' => $item,
             'brand'=> Brand::all()
-            ]); 
-       }
+        ]); 
+    }
 
+    public function viewItemDetails($id)
+    {
+        
+        $viewItem = Items::where('id', $id)->first();
 
+        return view('client_side.product')->with(['itemDetails'=> $viewItem]);
+    }
 }       

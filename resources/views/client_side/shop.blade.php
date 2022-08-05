@@ -51,14 +51,14 @@
                             <div class="product-meta-data">
                                 <div class="line"></div>
                                 <p class="product-price">{{$data->price}}</p>
-                                <a href="product-details.html">
+                                <a href="/viewItemDetails/{{$data->id}}">
                                     <h6>{{$data->name}}</h6>
                                 </a>
                             </div>
                             <!-- Ratings & Cart -->
                             <div class="ratings-cart text-right">
                                 <div class="cart">
-                                    <a href="cart.html" data-toggle="tooltip" data-placement="left" title="Add to Cart"><img src="{{ asset('user/img/core-img/cart.png') }}" alt=""></a>
+                                    <a href="/addtocart/{{$data->id}}" data-toggle="tooltip" data-placement="left" title="Add to Cart"><img src="{{ asset('user/img/core-img/cart.png') }}" alt=""></a>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +66,6 @@
                 </div>
             @endforeach 
         </div>
-
         <div class="row">
             <div class="col-12">
                 <!-- Pagination -->

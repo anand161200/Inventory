@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -46,10 +47,18 @@ Route::get('/delete-item/{id}',[ItemsController::class,'itemDelete']);
 
 Route::get('/home',[UserController::class,'home'])->name('home');
 Route::get('/checkout',[UserController::class,'checkout'])->name('checkout');
-Route::get('/cart',[UserController::class,'cart'])->name('cart');
 Route::get('/product',[UserController::class,'product'])->name('product');
 
 Route::get('/shop',[ItemsController::class,'shop'])->name('shop');
+Route::get('/viewItemDetails/{id}',[ItemsController::class,'viewItemDetails'])->name('viewItemDetails');
+
+  // Add to cart 
+Route::get('/cart', [CartController::class,'CartList'])->name('CartList');
+Route::get('/view_cart', [CartController::class,'viewCart'])->name('viewCart');
+Route::get('/addtocart/{item_id}',[CartController::class,'addtoCart']);
+Route::get('/update_cart/{item_id}/{quantity}',[CartController::class,'updateCart']);
+Route::get('/deletecart/{item_id}',[CartController::class,'deletecart']);
+
 
 
 

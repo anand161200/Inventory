@@ -26,8 +26,8 @@
         <ul>
             <li class="active"><a href="{{ route('home') }}">Home</a></li>
             <li><a href="{{ route('shop') }}">Shop</a></li>
-            <li><a href="{{ route('product') }}">Product</a></li>
-            <li><a href="{{ route('cart') }}">Cart</a></li>
+            {{-- <li><a href="{{ route('product') }}">Product</a></li> --}}
+            <li><a href="{{ route('CartList') }}">Cart</a></li>
             <li><a href="{{ route('checkout') }}">Checkout</a></li>
         </ul>
     </nav>

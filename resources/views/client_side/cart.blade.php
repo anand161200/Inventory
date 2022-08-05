@@ -8,7 +8,6 @@
                 <div class="cart-title mt-50">
                     <h2>Shopping Cart</h2>
                 </div>
-
                 <div class="cart-table clearfix">
                     <table class="table table-responsive">
                         <thead>
@@ -17,72 +16,33 @@
                                 <th>Name</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="cart_data">
+                            {{-- @foreach ($all_cart as $data)
                             <tr>
                                 <td class="cart_product_img">
-                                    <a href="#"><img src="{{asset('user/img/bg-img/2.jpg')}}" alt="Product"></a>
+                                    <a href="#"><img src="{{ asset('user/img/product-img/oneplus/9rt.jpeg') }}" alt="Product"></a>
                                 </td>
                                 <td class="cart_product_desc">
-                                    <h5>White Modern Chair</h5>
+                                    <h5>{{$data->name}}</h5>
                                 </td>
                                 <td class="price">
-                                    <span>$130</span>
+                                    <span>{{$data->price}}</span>
                                 </td>
                                 <td class="qty">
                                     <div class="qty-btn d-flex">
                                         <p>Qty</p>
                                         <div class="quantity">
-                                            <span class="qty-minus" onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                            <input type="number" class="qty-text" id="qty" step="1" min="1" max="300" name="quantity" value="1">
-                                            <span class="qty-plus" onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                            <span class="qty-minus" onclick="minusButton({{$data->id}})"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                            <input type="number" class="qty-text" id="qty" step="1" min="1" max="300" name="quantity" value="{{ $data->quantity }}">
+                                            <span class="qty-plus" onclick="plusButton({{$data->id}})"><i class="fa fa-plus" aria-hidden="true"></i></span>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="cart_product_img">
-                                    <a href="#"><img src="{{asset('user/img/bg-img/2.jpg')}}" alt="Product"></a>
-                                </td>
-                                <td class="cart_product_desc">
-                                    <h5>Minimal Plant Pot</h5>
-                                </td>
-                                <td class="price">
-                                    <span>$10</span>
-                                </td>
-                                <td class="qty">
-                                    <div class="qty-btn d-flex">
-                                        <p>Qty</p>
-                                        <div class="quantity">
-                                            <span class="qty-minus" onclick="var effect = document.getElementById('qty2'); var qty = effect.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                            <input type="number" class="qty-text" id="qty2" step="1" min="1" max="300" name="quantity" value="1">
-                                            <span class="qty-plus" onclick="var effect = document.getElementById('qty2'); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="cart_product_img">
-                                    <a href="#"><img src="{{asset('user/img/bg-img/2.jpg')}}" alt="Product"></a>
-                                </td>
-                                <td class="cart_product_desc">
-                                    <h5>Minimal Plant Pot</h5>
-                                </td>
-                                <td class="price">
-                                    <span>$10</span>
-                                </td>
-                                <td class="qty">
-                                    <div class="qty-btn d-flex">
-                                        <p>Qty</p>
-                                        <div class="quantity">
-                                            <span class="qty-minus" onclick="var effect = document.getElementById('qty3'); var qty = effect.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                            <input type="number" class="qty-text" id="qty3" step="1" min="1" max="300" name="quantity" value="1">
-                                            <span class="qty-plus" onclick="var effect = document.getElementById('qty3'); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                            @endforeach --}}
                         </tbody>
                     </table>
                 </div>
@@ -103,4 +63,85 @@
         </div>
     </div>
 </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let cart_data=document.getElementById('cart_data');
+        let alldata='';
+
+       window.onload=function() {
+             recall();  
+        }
+        function recall()
+        {
+            axios.get('/view_cart')
+            .then(function (response) {
+            let  user_data = response.data.cart_data;
+                alldata=user_data;
+                reload();
+            })
+        }
+
+        function reload()
+        {
+            cart_data.innerHTML='';
+
+            alldata.forEach(function(data) { 
+                cart_data.innerHTML +=
+                `<tr>
+                    <td class="cart_product_img">
+                        <a href="#"><img src="{{ asset('user/img/product-img/oneplus/9rt.jpeg') }}" alt="Product"></a>
+                    </td>
+                    <td class="cart_product_desc">
+                        <h5>${data.name}</h5>
+                    </td>
+                    <td class="price">
+                        <span>${data.price}</span>
+                    </td>
+                    <td class="qty">
+                        <div class="qty-btn d-flex">
+                            <p>Qty</p>
+                            <div class="quantity">                          
+                                <span class="qty-minus mr-2" onclick="minusButton(${data.id})"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                <input type="number" class="qty-text" id="qty" step="1" min="1" max="300" name="quantity" value="${data.quantity }">
+                                <span class="qty-plus" onclick="plusButton(${data.id})"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="remove(${data.id})">x</button>
+                    </td>
+                </tr>`
+            }); 
+        }
+
+        function minusButton(id)
+        {
+            axios.get(`/update_cart/${id}/-1`)
+            .then(function (response) {
+                user_data = response.data.cart_data;
+                alldata = user_data;
+                recall();
+             });
+        }
+        function plusButton(id)
+        {
+            axios.get(`/update_cart/${id}/+1`)
+            .then(function (response) {
+                user_data = response.data.cart_data;
+                alldata = user_data;
+                recall();
+             });
+        }
+
+        function remove(id)
+        {
+            axios.get(`/deletecart/${id}`)
+            .then(function (response) {
+                user_data = response.data.users;
+                alldata=user_data;
+                recall();
+            });
+
+        }
+    </script>
 @endsection

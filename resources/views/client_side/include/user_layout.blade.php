@@ -9,14 +9,14 @@
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title  -->
-    <title>Amado - Furniture Ecommerce Template | Home</title>
+    <title> Mobile|Apk</title>
 
     <!-- Favicon  -->
     <link rel="icon" href="{{ asset('user/img/core-img/favicon.ico')}}">
 
     <!-- Core Style CSS -->
     <link rel="stylesheet" href="{{ asset('user/css/core-style.css') }}">
-    <link rel="stylesheet" href="{{ asset('user/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('user/css/style.css') }}">
             
 
 </head>
