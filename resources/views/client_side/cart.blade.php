@@ -20,29 +20,6 @@
                             </tr>
                         </thead>
                         <tbody id="cart_data">
-                            {{-- @foreach ($all_cart as $data)
-                            <tr>
-                                <td class="cart_product_img">
-                                    <a href="#"><img src="{{ asset('user/img/product-img/oneplus/9rt.jpeg') }}" alt="Product"></a>
-                                </td>
-                                <td class="cart_product_desc">
-                                    <h5>{{$data->name}}</h5>
-                                </td>
-                                <td class="price">
-                                    <span>{{$data->price}}</span>
-                                </td>
-                                <td class="qty">
-                                    <div class="qty-btn d-flex">
-                                        <p>Qty</p>
-                                        <div class="quantity">
-                                            <span class="qty-minus" onclick="minusButton({{$data->id}})"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                            <input type="number" class="qty-text" id="qty" step="1" min="1" max="300" name="quantity" value="{{ $data->quantity }}">
-                                            <span class="qty-plus" onclick="plusButton({{$data->id}})"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach --}}
                         </tbody>
                     </table>
                 </div>
@@ -51,12 +28,10 @@
                 <div class="cart-summary">
                     <h5>Cart Total</h5>
                     <ul class="summary-table">
-                        <li><span>subtotal:</span> <span>$140.00</span></li>
                         <li><span>delivery:</span> <span>Free</span></li>
-                        <li><span>total:</span> <span>$140.00</span></li>
+                        <li><span>total:</span> <span id="total"></span></li>
                     </ul>
-                    <div class="cart-btn mt-100">
-                        <a href="cart.html" class="btn amado-btn w-100">Checkout</a>
+                    <div class="cart-btn mt-100" id="stock">
                     </div>
                 </div>
             </div>
@@ -65,8 +40,11 @@
 </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        let cart_data=document.getElementById('cart_data');
+        let cart_data = document.getElementById('cart_data');
+        let total_text = document.getElementById('total');
+        let stock_manage = document.getElementById('stock');
         let alldata='';
+        let Grand_total=0;
 
        window.onload=function() {
              recall();  
@@ -75,8 +53,10 @@
         {
             axios.get('/view_cart')
             .then(function (response) {
-            let  user_data = response.data.cart_data;
+            let user_data = response.data.cart_data;
+            let total = response.data.sub_total.total;
                 alldata=user_data;
+                Grand_total= total;
                 reload();
             })
         }
@@ -100,11 +80,9 @@
                     <td class="qty">
                         <div class="qty-btn d-flex">
                             <p>Qty</p>
-                            <div class="quantity">                          
-                                <span class="qty-minus mr-2" onclick="minusButton(${data.id})"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                <input type="number" class="qty-text" id="qty" step="1" min="1" max="300" name="quantity" value="${data.quantity }">
-                                <span class="qty-plus" onclick="plusButton(${data.id})"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                            </div>
+                            <button class="btn btn-danger btn-sm " ${(data.quantity <= 1) ? 'disabled' : ''} onclick="minusButton(${data.id})">-</button>
+                            <input type="number" class="qty-text" id="qty" step="1" min="1" max="300" name="quantity" value="${data.quantity }">   
+                            <button class="btn btn-success btn-sm" ${(data.quantity >= data.stock) ? 'disabled' : ''} onclick="plusButton(${data.id})">+</button>
                         </div>
                     </td>
                     <td>
@@ -112,6 +90,10 @@
                     </td>
                 </tr>`
             }); 
+                total_text.innerHTML = `${Grand_total ?? '0'}`;
+
+                stock_manage.innerHTML =
+                `<a href="cart.html" onclick="stockMaintain()" class="btn amado-btn w-100">Checkout</a> `
         }
 
         function minusButton(id)
@@ -141,6 +123,11 @@
                 alldata=user_data;
                 recall();
             });
+
+        }
+
+        function stockMaintain()
+        {
 
         }
     </script>

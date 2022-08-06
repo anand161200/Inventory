@@ -21,13 +21,23 @@ class CartController extends Controller
         ->select([
             'cart.*',
             'items.name',
-            'items.price'
+            'items.price',
+            'items.stock',
+
         ])
         ->join('items', 'cart.item_id', '=', 'items.id')
         ->get();
 
+        $total = DB::table('cart')
+        ->select([
+            DB::raw('sum(cart.quantity * items.price) as total')
+        ])
+        ->join('items', 'cart.item_id', '=', 'items.id')
+        ->first();
+
         return response()->json([
-            'cart_data' => $all_cart
+            'cart_data' => $all_cart,
+            'sub_total' => $total
         ],200);
     }
 
@@ -58,7 +68,8 @@ class CartController extends Controller
         ->select([
             'cart.*',
             'items.name',
-            'items.price'
+            'items.price',
+            'items.stock'
         ])
         ->join('items', 'cart.item_id', '=', 'items.id')
         ->get();
@@ -78,7 +89,8 @@ class CartController extends Controller
         ->select([
             'cart.*',
             'items.name',
-            'items.price'
+            'items.price',
+            'items.stock'
         ])
         ->join('items', 'cart.item_id', '=', 'items.id')
         ->get();

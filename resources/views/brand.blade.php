@@ -171,7 +171,7 @@
                     Swal.fire({
                         position: 'top-end',
                         icon: 'success',
-                        title: `${(brand_id = '') ? 'Add successfully' : 'Update Successfully'}`,
+                        title: `Your work has been saved`,
                         showConfirmButton: false,
                         timer: 1500
                     }) 
