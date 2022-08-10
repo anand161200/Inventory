@@ -28,7 +28,7 @@
             <li><a href="{{ route('shop') }}">Shop</a></li>
             {{-- <li><a href="{{ route('product') }}">Product</a></li> --}}
             <li><a href="{{ route('CartList') }}">Cart</a></li>
-            <li><a href="{{ route('checkout') }}">Checkout</a></li>
+            {{-- <li><a href="{{ route('checkout') }}">Checkout</a></li> --}}
         </ul>
     </nav>
     <!-- Button Group -->

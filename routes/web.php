@@ -3,7 +3,9 @@
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ItemsController;
+use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\UserController;
+use App\Models\OrderDetail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,7 +48,6 @@ Route::get('/delete-item/{id}',[ItemsController::class,'itemDelete']);
 });
 
 Route::get('/home',[UserController::class,'home'])->name('home');
-Route::get('/checkout',[UserController::class,'checkout'])->name('checkout');
 Route::get('/product',[UserController::class,'product'])->name('product');
 
 Route::get('/shop',[ItemsController::class,'shop'])->name('shop');
@@ -58,6 +59,12 @@ Route::get('/view_cart', [CartController::class,'viewCart'])->name('viewCart');
 Route::get('/addtocart/{item_id}',[CartController::class,'addtoCart']);
 Route::get('/update_cart/{item_id}/{quantity}',[CartController::class,'updateCart']);
 Route::get('/deletecart/{item_id}',[CartController::class,'deletecart']);
+// Route::get('/update-stock/{item_id}/{quantity}',[CartController::class,'updateStock']);
+
+// Order 
+Route::get('/check_page',[OrderDetailController::class,'checkoutPage'])->name('viweCheckout');
+Route::get('/checkout',[OrderDetailController::class,'checkout'])->name('checkout');
+Route::post('/store_order',[OrderDetailController::class,'storeOrder'])->name('store_order');
 
 
 

@@ -13,12 +13,13 @@ class CreateOrderDetailTable extends Migration
      */
     public function up()
     {
-        Schema::create('_order_detail', function (Blueprint $table) {
+        Schema::create('order_detail', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('item_id');
-            $table->bigInteger('order_id');
+            $table->unsignedBigInteger('checkout_id');
             $table->integer('quantity');
             $table->foreign('item_id')->references('id')->on('items');
+            $table->foreign('checkout_id')->references('id')->on('checkout');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateOrderDetailTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('_order_detail');
+        Schema::dropIfExists('order_detail');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Items;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -100,4 +101,14 @@ class CartController extends Controller
         ],200);
 
     }
+
+    // public function updateStock($item_id = null, $quantity = null)
+    // {
+    //     $stock_detail =Items::where('id',$item_id)->get();
+
+    //     foreach ($stock_detail as $item) {
+    //         $item->stock = $item->stock - $quantity ;
+    //         $item->save();
+    //     }
+    // } 
 }

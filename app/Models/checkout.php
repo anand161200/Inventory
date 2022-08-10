@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderDetail extends Model
+class checkout extends Model
 {
     use HasFactory;
-    
-    protected $table="order_detail";
 
+    protected $table= 'checkout';
+    
     protected $guarded = [];
+
+    public $timestamps = false;
 }

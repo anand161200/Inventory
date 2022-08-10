@@ -31,7 +31,8 @@
                         <li><span>delivery:</span> <span>Free</span></li>
                         <li><span>total:</span> <span id="total"></span></li>
                     </ul>
-                    <div class="cart-btn mt-100" id="stock">
+                    <div class="cart-btn mt-100">
+                        <a href="{{route('viweCheckout')}}" class="btn amado-btn w-100">Checkout</a>
                     </div>
                 </div>
             </div>
@@ -42,13 +43,16 @@
     <script>
         let cart_data = document.getElementById('cart_data');
         let total_text = document.getElementById('total');
-        let stock_manage = document.getElementById('stock');
         let alldata='';
         let Grand_total=0;
+        // let item_id = '';
+        // let quantity ='';
+        // let result =[];
 
        window.onload=function() {
-             recall();  
+            recall();  
         }
+
         function recall()
         {
             axios.get('/view_cart')
@@ -64,6 +68,7 @@
         function reload()
         {
             cart_data.innerHTML='';
+            result=[];
 
             alldata.forEach(function(data) { 
                 cart_data.innerHTML +=
@@ -89,11 +94,17 @@
                         <button class="btn btn-danger btn-sm" onclick="remove(${data.id})">x</button>
                     </td>
                 </tr>`
+
+                // item_id = data.item_id;
+                // quantity = data.quantity;
+
+                // result.push({
+                //     item_id : data.item_id,
+                //     quantity : data.quantity
+                // });
+
             }); 
                 total_text.innerHTML = `${Grand_total ?? '0'}`;
-
-                stock_manage.innerHTML =
-                `<a href="cart.html" onclick="stockMaintain()" class="btn amado-btn w-100">Checkout</a> `
         }
 
         function minusButton(id)
@@ -105,6 +116,7 @@
                 recall();
              });
         }
+
         function plusButton(id)
         {
             axios.get(`/update_cart/${id}/+1`)
@@ -112,7 +124,7 @@
                 user_data = response.data.cart_data;
                 alldata = user_data;
                 recall();
-             });
+            });
         }
 
         function remove(id)
@@ -123,12 +135,14 @@
                 alldata=user_data;
                 recall();
             });
-
         }
 
-        function stockMaintain()
-        {
+        // function stockMaintain()
+        // {
+        //     // axios.get(`/update-stock/${item_id}/${quantity}`)
+        //      console.log(result);
+        //     axios.post()
+        // }
 
-        }
     </script>
 @endsection
