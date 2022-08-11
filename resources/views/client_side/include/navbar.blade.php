@@ -39,8 +39,8 @@
     <!-- Cart Menu -->
     <div class="cart-fav-search mb-100">
         <a href="cart.html" class="cart-nav"><img src="{{asset('user/img/core-img/cart.png')}}" alt=""> Cart <span>(0)</span></a>               
-        <a href="#" class="fav-nav"><img src="{{asset('user/img/core-img/favorites.png')}}" alt=""> Favourite</a>
-        <a href="#" class="search-nav"><img src="{{asset('user/img/core-img/search.png')}}" alt=""> Search</a>
+        <a href="{{route('login_form')}}" class="fav-nav"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
+        <a href="{{route('register_form')}}"><i class="fa fa-user-plus" aria-hidden="true"></i> Regiter</a>
     </div>                                            
     <!-- Social Button -->
     <div class="social-info d-flex justify-content-between">

@@ -24,7 +24,7 @@ Route::get('/dashbord', function () {
 });
 
 Route::get('/', function () {
-    return view('index');
+    return view('idex');
 })->name('index');
 
 
@@ -65,6 +65,15 @@ Route::get('/deletecart/{item_id}',[CartController::class,'deletecart']);
 Route::get('/check_page',[OrderDetailController::class,'checkoutPage'])->name('viweCheckout');
 Route::get('/checkout',[OrderDetailController::class,'checkout'])->name('checkout');
 Route::post('/store_order',[OrderDetailController::class,'storeOrder'])->name('store_order');
+
+// login
+
+Route::get('/login_form',[UserController::class, 'loginForm'])->name('login_form');
+
+
+//Register
+Route::get('/register_form',[UserController::class, 'registerForm'])->name('register_form');
+Route::post('register',[UserController::class,'register'])->name('register');
 
 
 
