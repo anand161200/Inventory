@@ -1,6 +1,6 @@
 @extends('client_side.include.user_layout')
 @section('content')
-<div class="cart-table-area section-padding-100">
+<div class="amado_product_area section-padding-100">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 col-lg-8">
@@ -13,6 +13,25 @@
                   </div>
             </div>
         </div>
+        <div class="row">
+            {{-- @dump($view_order); --}}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Order Number</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ( $view_order as  $data)
+                     <td>{{$data->order_number}}</td>
+                     <td>{{$data->first_name}}</td>
+                     <td>{{$data->amount}}</td>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+</div>  
 @endsection

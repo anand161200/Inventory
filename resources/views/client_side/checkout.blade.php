@@ -20,7 +20,8 @@
                         </div>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <input type="text" class="form-control" name="first_name" value="" placeholder="First Name">
+                                    <input type="text" class="form-control" name="first_name" 
+                                    value="{{ Auth::user()->firstName}}" placeholder="First Name">
 
                                     <span class="error">
                                         @error('first_name')
@@ -29,7 +30,8 @@
                                     </span>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <input type="text" class="form-control" name="last_name" value="" placeholder="Last Name">
+                                    <input type="text" class="form-control" name="last_name" placeholder="Last Name"
+                                    value="{{ Auth::user()->lastName}}">
                                     <span class="error">
                                         @error('last_name')
                                             {{ $message }}
@@ -37,7 +39,8 @@
                                     </span>
                                 </div>
                                 <div class="col-12 mb-3">
-                                    <input type="email" class="form-control" name="email" placeholder="Email" value="">
+                                    <input type="email" class="form-control" name="email" placeholder="Email" 
+                                    value="{{ Auth::user()->email}}">
                                     <span class="error">
                                         @error('email')
                                             {{ $message }}
@@ -46,7 +49,8 @@
                                 </div>
                                 
                                 <div class="col-12 mb-3">
-                                    <input type="text" class="form-control mb-3" name="address" placeholder="Address" value="">
+                                    <input type="text" class="form-control mb-3" name="address" placeholder="Address" 
+                                    value="{{ Auth::user()->address}}">
                                     <span class="error">
                                         @error('address')
                                             {{ $message }}
@@ -62,7 +66,7 @@
                                     </span>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <input type="number" class="form-control" name="contact" min="0" placeholder="Phone No" value="">
+                                    <input type="number" class="form-control" name="contact" min="0" placeholder="Phone No"  value="{{ Auth::user()->phoneNumber}}">
                                     <span class="error">
                                         @error('contact')
                                             {{ $message }}

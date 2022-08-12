@@ -4,22 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function home()
     {
         return view('client_side.home');
-    }
-
-    public function product()
-    {
-        return view('client_side.product'); 
-    }
-
-    public function loginForm()
-    {
-        return view('auth.login');
     }
 
     public function registerForm()
@@ -50,5 +41,35 @@ class UserController extends Controller
         $user->phoneNumber = $request->phoneNumber;
         $user->password = bcrypt($request->password);
         $user->save();
+
+        return redirect()->route('login_form');
+    }
+
+    public function loginForm()
+    {
+        return view('auth.login');
+    }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+
+            'email' => 'required',
+            'password' => 'required'
+        ]);
+
+        $credentials = $request->only('email', 'password');
+
+        if(Auth::attempt($credentials))
+        {
+            return redirect()->route('home');
+        }
+        return back()->with('error', 'Email or passsword inccorect.');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/login_form');
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Items;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
@@ -27,6 +28,7 @@ class CartController extends Controller
 
         ])
         ->join('items', 'cart.item_id', '=', 'items.id')
+        ->where('user_id', Auth::user()->id)
         ->get();
 
         $total = DB::table('cart')
@@ -34,6 +36,7 @@ class CartController extends Controller
             DB::raw('sum(cart.quantity * items.price) as total')
         ])
         ->join('items', 'cart.item_id', '=', 'items.id')
+        ->where('user_id', Auth::user()->id)
         ->first();
 
         return response()->json([
@@ -44,7 +47,9 @@ class CartController extends Controller
 
     public function addtoCart($item_id)
     {
-        $card_details =Cart::where('item_id',$item_id)->get();
+        $card_details =Cart::where('item_id',$item_id)
+        ->where('user_id', Auth::user()->id)
+        ->get();
 
         if (count($card_details) > 0) {
             foreach ($card_details as $item) {
@@ -53,6 +58,7 @@ class CartController extends Controller
             }
         } else {
             $cart = new Cart();
+            $cart->user_id = Auth::user()->id;
             $cart->item_id = $item_id;
             $cart->current_date = Carbon::now();
             $cart->save();
@@ -73,6 +79,7 @@ class CartController extends Controller
             'items.stock'
         ])
         ->join('items', 'cart.item_id', '=', 'items.id')
+        ->where('user_id', Auth::user()->id)
         ->get();
 
         return response()->json([

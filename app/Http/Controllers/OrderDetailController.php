@@ -7,6 +7,7 @@ use App\Models\checkout;
 use App\Models\Items;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OrderDetailController extends Controller
@@ -28,6 +29,7 @@ class OrderDetailController extends Controller
 
         ])
         ->join('items', 'cart.item_id', '=', 'items.id')
+        ->where('user_id', Auth::user()->id)
         ->get();
 
         $total = DB::table('cart')
@@ -35,6 +37,7 @@ class OrderDetailController extends Controller
             DB::raw('sum(cart.quantity * items.price) as total')
         ])
         ->join('items', 'cart.item_id', '=', 'items.id')
+        ->where('user_id', Auth::user()->id)
         ->first();
 
         return response()->json([
@@ -56,6 +59,7 @@ class OrderDetailController extends Controller
 
         $chekout = new checkout();
         $chekout->order_number = time();
+        $chekout->user_id = Auth::user()->id;
         $chekout->first_name = $request->first_name;
         $chekout->last_name = $request->last_name;
         $chekout->email = $request->email;
@@ -74,12 +78,14 @@ class OrderDetailController extends Controller
 
         ])
         ->join('items', 'cart.item_id', '=', 'items.id')
+        ->where('user_id', Auth::user()->id)
         ->get();
 
         foreach ($all_cart as $cart) {
 
             $order = new OrderDetail();
             $order->item_id = $cart->item_id;
+            $order->user_id = Auth::user()->id;
             $order->checkout_id = $chekout->id;
             $order->quantity = $cart->quantity;
             $order->save();  
@@ -87,12 +93,14 @@ class OrderDetailController extends Controller
             Cart::find($cart->id)->delete();
         }
 
-        
-         //$update_stock= Cart::find($cart->item_id)->get();
-        // $update_stock->stock = $cart->stock - $cart->quantity ;
-        // $update_stock->save();
+        $order_detail = DB::table('checkout')
+        ->where('user_id',Auth::user()->id)
+        ->orderBy('order_number','desc')
+        ->get();
 
-        return view('client_side.thankyou');
+        return view('client_side.thankyou')->with([
+            'view_order' => $order_detail,
+        ]);
     }  
 
 }

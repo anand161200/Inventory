@@ -96,6 +96,11 @@ class ItemsController extends Controller
 
        // Client side data
 
+    public function product()
+    {
+        return view('client_side.product'); 
+    }
+
     public function shop()
     {
         $item = DB::table('items')

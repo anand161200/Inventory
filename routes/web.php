@@ -24,7 +24,7 @@ Route::get('/dashbord', function () {
 });
 
 Route::get('/', function () {
-    return view('idex');
+    return view('index');
 })->name('index');
 
 
@@ -48,10 +48,11 @@ Route::get('/delete-item/{id}',[ItemsController::class,'itemDelete']);
 });
 
 Route::get('/home',[UserController::class,'home'])->name('home');
-Route::get('/product',[UserController::class,'product'])->name('product');
+
 
 Route::get('/shop',[ItemsController::class,'shop'])->name('shop');
 Route::get('/viewItemDetails/{id}',[ItemsController::class,'viewItemDetails'])->name('viewItemDetails');
+Route::get('/product',[ItemsController::class,'product'])->name('product');
 
   // Add to cart 
 Route::get('/cart', [CartController::class,'CartList'])->name('CartList');
@@ -59,21 +60,21 @@ Route::get('/view_cart', [CartController::class,'viewCart'])->name('viewCart');
 Route::get('/addtocart/{item_id}',[CartController::class,'addtoCart']);
 Route::get('/update_cart/{item_id}/{quantity}',[CartController::class,'updateCart']);
 Route::get('/deletecart/{item_id}',[CartController::class,'deletecart']);
-// Route::get('/update-stock/{item_id}/{quantity}',[CartController::class,'updateStock']);
 
 // Order 
 Route::get('/check_page',[OrderDetailController::class,'checkoutPage'])->name('viweCheckout');
 Route::get('/checkout',[OrderDetailController::class,'checkout'])->name('checkout');
 Route::post('/store_order',[OrderDetailController::class,'storeOrder'])->name('store_order');
 
-// login
-
-Route::get('/login_form',[UserController::class, 'loginForm'])->name('login_form');
-
-
 //Register
 Route::get('/register_form',[UserController::class, 'registerForm'])->name('register_form');
 Route::post('register',[UserController::class,'register'])->name('register');
+
+// login
+Route::get('/login_form',[UserController::class, 'loginForm'])->name('login_form');
+Route::post('/login',[UserController::class, 'login'])->name('login');
+// logout
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
 
 

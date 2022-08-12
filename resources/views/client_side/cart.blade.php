@@ -45,9 +45,6 @@
         let total_text = document.getElementById('total');
         let alldata='';
         let Grand_total=0;
-        // let item_id = '';
-        // let quantity ='';
-        // let result =[];
 
        window.onload=function() {
             recall();  
@@ -68,7 +65,6 @@
         function reload()
         {
             cart_data.innerHTML='';
-            result=[];
 
             alldata.forEach(function(data) { 
                 cart_data.innerHTML +=
@@ -94,14 +90,6 @@
                         <button class="btn btn-danger btn-sm" onclick="remove(${data.id})">x</button>
                     </td>
                 </tr>`
-
-                // item_id = data.item_id;
-                // quantity = data.quantity;
-
-                // result.push({
-                //     item_id : data.item_id,
-                //     quantity : data.quantity
-                // });
 
             }); 
                 total_text.innerHTML = `${Grand_total ?? '0'}`;
@@ -136,13 +124,6 @@
                 recall();
             });
         }
-
-        // function stockMaintain()
-        // {
-        //     // axios.get(`/update-stock/${item_id}/${quantity}`)
-        //      console.log(result);
-        //     axios.post()
-        // }
 
     </script>
 @endsection

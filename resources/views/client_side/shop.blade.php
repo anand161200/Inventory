@@ -57,9 +57,11 @@
                             </div>
                             <!-- Ratings & Cart -->
                             <div class="ratings-cart text-right">
+                                @auth
                                 <div class="cart">
                                     <a href="/addtocart/{{$data->id}}" data-toggle="tooltip" data-placement="left" title="Add to Cart"><img src="{{ asset('user/img/core-img/cart.png') }}" alt=""></a>
                                 </div>
+                                @endauth
                             </div>
                         </div>
                     </div>

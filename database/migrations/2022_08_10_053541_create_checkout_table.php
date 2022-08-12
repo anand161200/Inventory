@@ -15,6 +15,7 @@ class CreateCheckoutTable extends Migration
     {
         Schema::create('checkout', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->bigInteger('order_number');
             $table->string('first_name');
             $table->string('last_name');
@@ -23,6 +24,7 @@ class CreateCheckoutTable extends Migration
             $table->bigInteger('zipcode'); 
             $table->bigInteger('contact'); 
             $table->integer('amount');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

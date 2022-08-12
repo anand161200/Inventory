@@ -32,10 +32,11 @@
                     </div>
 
                     <!-- Add to Cart Form -->
+                    @auth
                     <form class="cart clearfix" method="post">
                         <button type="submit" name="addtocart" value="5" class="btn amado-btn">Add to cart</button>
                     </form>
-
+                    @endauth
                 </div>
             </div>
         </div>
