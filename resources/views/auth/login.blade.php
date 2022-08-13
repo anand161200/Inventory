@@ -67,6 +67,11 @@
                       <button class="btn btn-primary btn-lg " type="submit">Submit</button>
                     </div>
                 </form>
+                <div>
+                  <span class="text-dark"> Already have a account ?
+                    <a href="{{route('register_form')}}" class="text-info">Sign In</a>
+                </span>
+                </div>
             </div>
           </div>
         </div>

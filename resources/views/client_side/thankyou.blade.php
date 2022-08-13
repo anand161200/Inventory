@@ -15,23 +15,25 @@
         </div>
         <div class="row">
             {{-- @dump($view_order); --}}
-            <table class="table">
+               <table class="table">
                 <thead>
                     <tr>
-                        <th>Order Number</th>
                         <th>Name</th>
                         <th>Price</th>
+                        <th>quantity</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ( $view_order as  $data)
-                     <td>{{$data->order_number}}</td>
-                     <td>{{$data->first_name}}</td>
-                     <td>{{$data->amount}}</td>
-                    @endforeach
+                @foreach ( $view_order as  $data)
+                    <tr>
+                     <td>{{$data->name}}</td>
+                     <td>{{$data->price}}</td>
+                     <td>{{$data->quantity}}</td>
+                    </tr>
+                 @endforeach
                 </tbody>
             </table>
         </div>
     </div>
-</div>  
+</div>   
 @endsection

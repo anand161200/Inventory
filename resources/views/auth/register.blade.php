@@ -160,7 +160,12 @@
                     <div class="mt-4 pt-2">
                       <button class="btn btn-primary btn-lg" type="submit">Submit</button>
                     </div>
-                </form>
+                </form><br>
+                <div>
+                  <span class="text-dark"> Already have a account ?
+                    <a href="{{route('login_form')}}" class="text-info">Sign up</a>
+                </span>
+                </div>
             </div>
           </div>
         </div>

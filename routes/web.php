@@ -65,6 +65,10 @@ Route::get('/deletecart/{item_id}',[CartController::class,'deletecart']);
 Route::get('/check_page',[OrderDetailController::class,'checkoutPage'])->name('viweCheckout');
 Route::get('/checkout',[OrderDetailController::class,'checkout'])->name('checkout');
 Route::post('/store_order',[OrderDetailController::class,'storeOrder'])->name('store_order');
+Route::get('thankyou', [OrderDetailController::class, 'thankyou'])->name('thankyou');
+Route::get('myorder', [OrderDetailController::class, 'myOrder'])->name('myorder');
+Route::get('my_order_details/{order_id}', [OrderDetailController::class, 'MyOrderDetails'])->name('My_order_details');
+
 
 //Register
 Route::get('/register_form',[UserController::class, 'registerForm'])->name('register_form');
@@ -75,6 +79,7 @@ Route::get('/login_form',[UserController::class, 'loginForm'])->name('login_form
 Route::post('/login',[UserController::class, 'login'])->name('login');
 // logout
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+
 
 
 

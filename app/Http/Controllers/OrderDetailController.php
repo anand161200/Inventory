@@ -93,14 +93,53 @@ class OrderDetailController extends Controller
             Cart::find($cart->id)->delete();
         }
 
+        $vieworder = DB::table('order_detail')
+        ->select([
+            'order_detail.*',
+            'quantity',
+            'items.name',
+            'items.price',
+        ])
+        ->join('items', 'order_detail.item_id', '=', 'items.id')
+        ->where('checkout_id',$chekout->id)
+        ->where('user_id',Auth::user()->id)
+        ->get();
+
+         return view('client_side.thankyou')->with([
+        'view_order' => $vieworder,
+
+        ]);
+       
+    }  
+    public function myorder()
+    {
         $order_detail = DB::table('checkout')
         ->where('user_id',Auth::user()->id)
         ->orderBy('order_number','desc')
         ->get();
 
-        return view('client_side.thankyou')->with([
+        return view('client_side.myorder')->with([
             'view_order' => $order_detail,
         ]);
-    }  
+    }
+    public function MyOrderDetails($order_id)
+    {
+       
+        $vieworder = DB::table('order_detail')
+        ->select([
+            'order_detail.*',
+            'quantity',
+            'items.name',
+            'items.price',
+        ])
+        ->join('items', 'order_detail.item_id', '=', 'items.id')
+        ->where('checkout_id',$order_id)
+        ->where('user_id',Auth::user()->id)
+        ->get();
 
+        return view('client_side.order_details')->with([
+            'order_detail' => $vieworder
+
+        ]);
+    }
 }

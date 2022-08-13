@@ -36,7 +36,10 @@
             @auth
             <li><a href="{{ route('CartList') }}">Cart</a></li>
             @endauth
-            {{-- <li><a href="{{ route('checkout') }}">Checkout</a></li> --}}
+
+            @auth
+              <li><a href="{{ route('myorder') }}">My Order</a></li>   
+            @endauth
         </ul>
     </nav>
     <!-- Button Group -->
