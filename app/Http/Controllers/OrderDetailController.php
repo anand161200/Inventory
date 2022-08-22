@@ -122,6 +122,7 @@ class OrderDetailController extends Controller
             'view_order' => $order_detail,
         ]);
     }
+
     public function MyOrderDetails($order_id)
     {
        

@@ -52,6 +52,7 @@ Route::get('/home',[UserController::class,'home'])->name('home');
 
 Route::get('/shop',[ItemsController::class,'shop'])->name('shop');
 Route::get('/viewItemDetails/{id}',[ItemsController::class,'viewItemDetails'])->name('viewItemDetails');
+Route::get('/viewbrand/{brand_id}',[ItemsController::class,'viewbrandDetails'])->name('viewbrand');
 Route::get('/product',[ItemsController::class,'product'])->name('product');
 
   // Add to cart 
@@ -79,6 +80,9 @@ Route::get('/login_form',[UserController::class, 'loginForm'])->name('login_form
 Route::post('/login',[UserController::class, 'login'])->name('login');
 // logout
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+
+
+Route::get('viewbrandlist',[ItemsController::class , 'brandlist']);
 
 
 

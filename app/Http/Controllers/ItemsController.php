@@ -124,4 +124,40 @@ class ItemsController extends Controller
 
         return view('client_side.product')->with(['itemDetails'=> $viewItem]);
     }
+
+    public function brandlist()
+    {
+        // $brand = Brand::all();
+
+        // return response()->json([
+        //     'brand_name' =>  $brand
+        // ],200);
+
+        $brand_item = DB::table('items')
+        ->select([
+            'items.*',
+            DB::raw("brands.name AS brand_name")
+        ])
+        ->join('brands', 'items.brand_id', '=', 'brands.id')
+        ->get();
+
+        $group_data = $brand_item->groupBy('brand_name');
+
+        // dd($group_data->toArray());
+
+        return response()->json([
+            'itam' => $group_data
+        ],200);
+
+    }
+
+    public function viewbrandDetails($brand_id)
+    {
+        $itemlist = Items::where('brand_id', $brand_id)->get();
+
+        return response()->json([
+            'item_name' =>  $itemlist
+        ],200);
+    
+    }
 }       

@@ -22,7 +22,7 @@
                         <td>{{$data->amount}}</td>
                         <td><a href="my_order_details/{{ $data->id }}"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                     </tr>
-                 @endforeach
+                @endforeach
                 </tbody>
             </table>
         </div>
