@@ -11,6 +11,7 @@ class ItemsController extends Controller
 {
     public function indexOfBrand()
     {
+        
         return view('itams')->with([
             'brand'=> Brand::all()
         ]);
@@ -103,17 +104,12 @@ class ItemsController extends Controller
 
     public function shop()
     {
-        $item = DB::table('items')
-        ->select([
-            'items.*',
-            DB::raw("brands.name AS brand_name")
-        ])
-        ->join('brands', 'items.brand_id', '=', 'brands.id')
-        ->get();
+        $item = Items::all();
+        $brand = Brand::withCount('items')->get();
 
         return view('client_side.shop')->with([   
             'item_list' => $item,
-            'brand'=> Brand::all()
+            'brand_list' => $brand,
         ]); 
     }
 
@@ -127,37 +123,19 @@ class ItemsController extends Controller
 
     public function brandlist()
     {
-        // $brand = Brand::all();
-
-        // return response()->json([
-        //     'brand_name' =>  $brand
-        // ],200);
-
-        $brand_item = DB::table('items')
-        ->select([
-            'items.*',
-            DB::raw("brands.name AS brand_name")
-        ])
-        ->join('brands', 'items.brand_id', '=', 'brands.id')
-        ->get();
-
-        $group_data = $brand_item->groupBy('brand_name');
-
-        // dd($group_data->toArray());
+        $brand= Brand::with('items')->get();
 
         return response()->json([
-            'itam' => $group_data
-        ],200);
-
+            'brand_data' => $brand
+        ],200);  
     }
 
     public function viewbrandDetails($brand_id)
     {
-        $itemlist = Items::where('brand_id', $brand_id)->get();
+       $itemlist = Items::where('brand_id', $brand_id)->get();
 
         return response()->json([
             'item_name' =>  $itemlist
         ],200);
-    
     }
 }       

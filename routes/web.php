@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route:: prefix('admin')->middleware('auth','isAdmin')->group( function () {
+
 Route::get('/dashbord', function () {
     return view('dashbord');
 });
@@ -41,6 +43,9 @@ Route::post('/store-update',[ItemsController::class,'storeUpadte']);
 Route::get('/item-details/{id}',[ItemsController::class,'itemDetails']);
 Route::get('/delete-item/{id}',[ItemsController::class,'itemDelete']);
 
+});
+
+
   // client side
 
   Route::get('/user_layout', function () {
@@ -52,8 +57,9 @@ Route::get('/home',[UserController::class,'home'])->name('home');
 
 Route::get('/shop',[ItemsController::class,'shop'])->name('shop');
 Route::get('/viewItemDetails/{id}',[ItemsController::class,'viewItemDetails'])->name('viewItemDetails');
-Route::get('/viewbrand/{brand_id}',[ItemsController::class,'viewbrandDetails'])->name('viewbrand');
 Route::get('/product',[ItemsController::class,'product'])->name('product');
+Route::get('viewbrandlist',[ItemsController::class , 'brandlist']);
+Route::get('/viewbrand/{brand_id}',[ItemsController::class,'viewbrandDetails'])->name('viewbrand');
 
   // Add to cart 
 Route::get('/cart', [CartController::class,'CartList'])->name('CartList');
@@ -70,7 +76,6 @@ Route::get('thankyou', [OrderDetailController::class, 'thankyou'])->name('thanky
 Route::get('myorder', [OrderDetailController::class, 'myOrder'])->name('myorder');
 Route::get('my_order_details/{order_id}', [OrderDetailController::class, 'MyOrderDetails'])->name('My_order_details');
 
-
 //Register
 Route::get('/register_form',[UserController::class, 'registerForm'])->name('register_form');
 Route::post('register',[UserController::class,'register'])->name('register');
@@ -80,9 +85,6 @@ Route::get('/login_form',[UserController::class, 'loginForm'])->name('login_form
 Route::post('/login',[UserController::class, 'login'])->name('login');
 // logout
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
-
-
-Route::get('viewbrandlist',[ItemsController::class , 'brandlist']);
 
 
 

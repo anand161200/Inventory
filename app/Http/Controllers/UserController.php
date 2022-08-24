@@ -62,6 +62,11 @@ class UserController extends Controller
 
         if(Auth::attempt($credentials))
         {
+            if(Auth::user()->role == 'admin')
+            {
+                return redirect()->route('index');
+            }
+            
             return redirect()->route('home');
         }
         return back()->with('error', 'Email or passsword inccorect.');

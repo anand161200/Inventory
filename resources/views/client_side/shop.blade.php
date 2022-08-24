@@ -6,14 +6,14 @@
     <div class="widget catagory mb-50">
         <!-- Widget Title -->
         <h6 class="widget-title mb-30">Brands</h6>
-            {{-- @dump($brand); --}}
         <!--  Catagories  -->
         <div class="catagories-menu">
             <ul id="brand_list">
-                {{-- @foreach ($brand as $data )
-                <li><a href="viewbrand/{{$data->id}}">{{$data->name}}</a></li>   
-                @endforeach --}}
-
+                @foreach ( $brand_list as $data)
+                    @if ($data->items_count > 0)
+                        <li><button  class="btn mt-2">{{$data->name}}</button></li>  
+                    @endif
+                @endforeach
             </ul>
         </div>
     </div>
@@ -87,77 +87,77 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
 
-        let brand_list = document.getElementById('brand_list');
-        let item_list = document.getElementById('item_list');
-        all_brand='';
+        // let brand_list = document.getElementById('brand_list');
+        // let item_list = document.getElementById('item_list');
+        // all_brand='';
 
-        window.onload=function() {
-            recall();  
-        }
+        // window.onload=function() {
+        //     recall();  
+        // }
 
-        function recall()
-        {
-            axios.get('/viewbrandlist')
-            .then(function (response) {
-                brand_data = response.data.itam;
-                all_brand = brand_data;
-                reload();
-            })
-        }
+        // function recall()
+        // {
+        //     axios.get('/viewbrandlist')
+        //     .then(function (response) {
+        //         brand_data = response.data.brand_data;
+        //         all_brand = brand_data;
+        //         reload();
+        //     })
+        // }
 
-        function reload()
-        {
-            let brand_id ='';
-            brand_list.innerHTML='';
+        // function reload()
+        // {
+        //     brand_list.innerHTML='';
 
-            Object.keys(all_brand).forEach(function(key) {
-             
-                all_brand[key].forEach(function(item) {
-                    brand_id = item.brand_id
-              }); 
-                brand_list.innerHTML += 
-              `<li><button onclick="itemlist(${brand_id})" class="btn">${key}</button></li>`
-            });
-        }
+        //     all_brand.forEach(function(data){
 
-        function itemlist(brand_id)
-        {
-            axios.get(`/viewbrand/${brand_id}`)
-            .then(function (response) {
-                item_data = response.data.item_name;
-                item_list.innerHTML = '';
+        //         if(data.items.length > 0 )
+        //         {
+        //             brand_list.innerHTML +=
+        //             `<li><button onclick="itemlist(${data.id})" class="btn mt-2">${data.name}</button></li>`
+        //         }
+        //     })
+        // }
 
-                item_data.forEach(function(data){
-                    item_list.innerHTML +=
-                    `<div class="col-12 col-sm-3 col-md-12 col-xl-3">
-                    <div class="single-product-wrapper">
-                        <!-- Product Image -->
-                        <div class="product-img">
-                            <img src="{{ asset('user/img/product-img/oneplus/9rt.jpeg') }}" alt="">
-                        </div>
-                        <!-- Product Description -->
-                        <div class="product-description d-flex align-items-center justify-content-between">
-                            <!-- Product Meta Data -->
-                            <div class="product-meta-data">
-                                <div class="line"></div>
-                                <p class="product-price">${data.price}</p>
-                                <a href="/viewItemDetails/${data.id}">
-                                    <h6>${data.name}</h6>
-                                </a>
-                            </div>
-                            <!-- Ratings & Cart -->
-                            <div class="ratings-cart text-right">
-                                @auth
-                                <div class="cart">
-                                    <a href="/addtocart/${data.id}" data-toggle="tooltip" data-placement="left" title="Add to Cart"><img src="{{ asset('user/img/core-img/cart.png') }}" alt=""></a>
-                                </div>
-                                @endauth
-                            </div>
-                        </div>
-                    </div>
-                </div>`
-                })  
-            })
-        }
+        // function itemlist(brand_id)
+        // {
+        //     axios.get(`/viewbrand/${brand_id}`)
+        //     .then(function (response) {
+        //         item_data = response.data.item_name;
+        //         item_list.innerHTML = '';
+
+        //         item_data.forEach(function(data){
+        //         item_list.innerHTML +=
+        //         `<div class="col-12 col-sm-3 col-md-12 col-xl-3">
+        //             <div class="single-product-wrapper">
+        //                 <!-- Product Image -->
+        //                 <div class="product-img">
+        //                     <img src="{{ asset('user/img/product-img/oneplus/9rt.jpeg') }}" alt="">
+        //                 </div>
+        //                 <!-- Product Description -->
+        //                 <div class="product-description d-flex align-items-center justify-content-between">
+        //                     <!-- Product Meta Data -->
+        //                     <div class="product-meta-data">
+        //                         <div class="line"></div>
+        //                         <p class="product-price">${data.price}</p>
+        //                         <a href="/viewItemDetails/${data.id}">
+        //                             <h6>${data.name}</h6>
+        //                         </a>
+        //                     </div>
+        //                     <!-- Ratings & Cart -->
+        //                     <div class="ratings-cart text-right">
+        //                         @auth
+        //                         <div class="cart">
+        //                             <a href="/addtocart/${data.id}" data-toggle="tooltip" data-placement="left" title="Add to Cart"><img src="{{ asset('user/img/core-img/cart.png') }}" alt=""></a>
+        //                         </div>
+        //                         @endauth
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         </div>`
+        //         })  
+        //     })
+        // }
+
     </script>
 @endsection

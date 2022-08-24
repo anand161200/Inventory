@@ -125,7 +125,6 @@ class OrderDetailController extends Controller
 
     public function MyOrderDetails($order_id)
     {
-       
         $vieworder = DB::table('order_detail')
         ->select([
             'order_detail.*',
