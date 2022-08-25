@@ -34,18 +34,7 @@ class ItemsController extends Controller
         ],200);
     }
 
-    function itemDetails($id)
-    {
-       $all_item = Items::where('brand_id', $id)->get();
-       $brand_name = Brand::find($id);
-       
-        return response()->json([
-            'details'  => $all_item,
-             'brand'   =>$brand_name
-        ],200);
-
-    }
-
+    // insert and update 
     public function storeUpadte(Request $request)
     {
         $request->validate(
@@ -78,7 +67,19 @@ class ItemsController extends Controller
             'Record add and update successfully'  
         ],200); 
     }
+        // edit
+    function itemDetails($id)
+    {
+       $all_item = Items::where('brand_id', $id)->get();
+       $brand_name = Brand::find($id);
+       
+        return response()->json([
+            'details'  => $all_item,
+             'brand'   =>$brand_name
+        ],200);
 
+    }
+    // delete
     function itemDelete($id)
     {
         $brand_name = Brand::find($id);
@@ -104,13 +105,19 @@ class ItemsController extends Controller
 
     public function shop()
     {
-        $item = Items::all();
         $brand = Brand::withCount('items')->get();
 
         return view('client_side.shop')->with([   
-            'item_list' => $item,
             'brand_list' => $brand,
         ]); 
+    }
+
+    public function shopItem()
+    {
+        $item = Items::all();
+        return response()->json([
+            'item_data' =>  $item
+        ],200);
     }
 
     public function viewItemDetails($id)
@@ -119,15 +126,6 @@ class ItemsController extends Controller
         $viewItem = Items::where('id', $id)->first();
 
         return view('client_side.product')->with(['itemDetails'=> $viewItem]);
-    }
-
-    public function brandlist()
-    {
-        $brand= Brand::with('items')->get();
-
-        return response()->json([
-            'brand_data' => $brand
-        ],200);  
     }
 
     public function viewbrandDetails($brand_id)

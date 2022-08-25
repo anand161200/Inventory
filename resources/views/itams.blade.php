@@ -36,9 +36,10 @@
                         <div class="modal-body p-4">
                             <form id="frm">
                                 <select class="form-select"  id="brand_select" aria-label="Default select example">
-                                    <option value="">select Item</option> 
+                                    {{-- <option value="">select Item</option>  --}}
                                     @foreach ($brand as $val)
-                                    <option value="{{ $val->id}}">{{ $val->name}} </option>
+                                    <option value="{{ $val->id}}">
+                                        {{ $val->name}} </option>
                                     @endforeach
                                 </select>
                                 <span class="text-danger" id="brand_id"></span>
@@ -60,7 +61,8 @@
                             </form>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                            <button type="button" onClick="FromSubmit()" value="" class="btn btn-primary" id="button_text"></button>
+                            <button type="button" onClick="FromSubmit()" class="btn btn-primary" id="button_text">
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -111,6 +113,22 @@
         recall(); 
     }
 
+    document.getElementById("brand_select").addEventListener('change', (event) => {
+        brand_id = event.target.value; 
+        axios.get(`/item-details/${brand_id}`)
+        .then(function (response) {
+            item_data = response.data.details;
+            item_rows.innerHTML = "";
+            if(item_data.length === 0)
+            {
+               addRow();
+            }
+            item_data.forEach(function(data) {
+                addRow(data);
+            }) 
+        })    
+    });
+
     let validation = $('#frm').validate({
         errorClass: 'error',
         rules:{}, 
@@ -152,10 +170,11 @@
         });
     }
 
-    function openmodel( brand_id = '')
+    function openmodel(brand_id = '')
     {
         errorReset();
         reset();
+       
         if(brand_id !== '')
         {
             axios.get(`/item-details/${brand_id}`)
@@ -178,8 +197,14 @@
             button_text.innerHTML = 'Submit';
             addRow();
         }
+
         myModal.show();
     }
+
+   function getItem(brand_id)
+   {
+        console.log(brand_id);
+   }
 
     function closemodel() {
         myModal.hide();

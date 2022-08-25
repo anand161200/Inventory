@@ -5,7 +5,6 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\UserController;
-use App\Models\OrderDetail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route:: prefix('admin')->middleware('auth','isAdmin')->group( function () {
+// Route:: prefix('admin')->middleware('auth','isAdmin')->group( function () {
 
 Route::get('/dashbord', function () {
     return view('dashbord');
@@ -43,7 +42,7 @@ Route::post('/store-update',[ItemsController::class,'storeUpadte']);
 Route::get('/item-details/{id}',[ItemsController::class,'itemDetails']);
 Route::get('/delete-item/{id}',[ItemsController::class,'itemDelete']);
 
-});
+// });
 
 
   // client side
@@ -51,14 +50,13 @@ Route::get('/delete-item/{id}',[ItemsController::class,'itemDelete']);
   Route::get('/user_layout', function () {
     return view('client_side.include.user_layout');
 });
-
 Route::get('/home',[UserController::class,'home'])->name('home');
-
-
-Route::get('/shop',[ItemsController::class,'shop'])->name('shop');
-Route::get('/viewItemDetails/{id}',[ItemsController::class,'viewItemDetails'])->name('viewItemDetails');
 Route::get('/product',[ItemsController::class,'product'])->name('product');
-Route::get('viewbrandlist',[ItemsController::class , 'brandlist']);
+
+// shop
+Route::get('/shop',[ItemsController::class,'shop'])->name('shop');
+Route::get('/shop-item',[ItemsController::class,'shopItem']);
+Route::get('/viewItemDetails/{id}',[ItemsController::class,'viewItemDetails'])->name('viewItemDetails');
 Route::get('/viewbrand/{brand_id}',[ItemsController::class,'viewbrandDetails'])->name('viewbrand');
 
   // Add to cart 
