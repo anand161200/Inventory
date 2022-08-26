@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,32 +25,30 @@ Route::get('/dashbord', function () {
     return view('dashbord');
 });
 
-Route::get('/', function () {
+Route::get('/index', function () {
     return view('index');
 })->name('index');
 
-
+// Brand
 Route::get('/brand',[BrandController::class,'indexOfBrand'])->name('brand_index');
 Route::get('/brand_list',[BrandController::class,'brandList']);
 Route::get('brand-edit/{id}',[BrandController::class,'brandDetails']);
 Route::post('/brand-data',[BrandController::class,'addOrupdate']);
 Route::post('delete_brand',[BrandController::class,'deleteBrand']);
-
-
+// Item
 Route::get('/itam',[ItemsController::class,'indexOfBrand'])->name('itam_index');
 Route::get('/item-list',[ItemsController::class,'itemList']);
 Route::post('/store-update',[ItemsController::class,'storeUpadte']);
 Route::get('/item-details/{id}',[ItemsController::class,'itemDetails']);
 Route::get('/delete-item/{id}',[ItemsController::class,'itemDelete']);
+Route::get('/edit-item/{id}',[ItemsController::class,'itemedit']);
 
 // });
 
+// Route:: prefix('user')->middleware('auth','isUser')->group( function () {
 
-  // client side
-
-  Route::get('/user_layout', function () {
-    return view('client_side.include.user_layout');
-});
+// client side
+Route::get('/user_layout', function () {return view('client_side.include.user_layout');});
 Route::get('/home',[UserController::class,'home'])->name('home');
 Route::get('/product',[ItemsController::class,'product'])->name('product');
 
@@ -59,7 +58,7 @@ Route::get('/shop-item',[ItemsController::class,'shopItem']);
 Route::get('/viewItemDetails/{id}',[ItemsController::class,'viewItemDetails'])->name('viewItemDetails');
 Route::get('/viewbrand/{brand_id}',[ItemsController::class,'viewbrandDetails'])->name('viewbrand');
 
-  // Add to cart 
+// Add to cart 
 Route::get('/cart', [CartController::class,'CartList'])->name('CartList');
 Route::get('/view_cart', [CartController::class,'viewCart'])->name('viewCart');
 Route::get('/addtocart/{item_id}',[CartController::class,'addtoCart']);
@@ -74,12 +73,14 @@ Route::get('thankyou', [OrderDetailController::class, 'thankyou'])->name('thanky
 Route::get('myorder', [OrderDetailController::class, 'myOrder'])->name('myorder');
 Route::get('my_order_details/{order_id}', [OrderDetailController::class, 'MyOrderDetails'])->name('My_order_details');
 
+// });
+
 //Register
 Route::get('/register_form',[UserController::class, 'registerForm'])->name('register_form');
 Route::post('register',[UserController::class,'register'])->name('register');
 
 // login
-Route::get('/login_form',[UserController::class, 'loginForm'])->name('login_form');
+Route::get('/',[UserController::class, 'loginForm'])->name('login_form');
 Route::post('/login',[UserController::class, 'login'])->name('login');
 // logout
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');

@@ -36,7 +36,7 @@
                         <div class="modal-body p-4">
                             <form id="frm">
                                 <select class="form-select"  id="brand_select" aria-label="Default select example">
-                                    {{-- <option value="">select Item</option>  --}}
+                                    <option value="">select Brand</option> 
                                     @foreach ($brand as $val)
                                     <option value="{{ $val->id}}">
                                         {{ $val->name}} </option>
@@ -114,19 +114,27 @@
     }
 
     document.getElementById("brand_select").addEventListener('change', (event) => {
-        brand_id = event.target.value; 
-        axios.get(`/item-details/${brand_id}`)
-        .then(function (response) {
-            item_data = response.data.details;
+        brand_id = event.target.value;
+
+        if(event.target.value !== "")
+        {
+            axios.get(`/item-details/${brand_id}`)
+            .then(function (response) {
+                item_data = response.data.details;
+                item_rows.innerHTML = "";
+                if(item_data.length === 0)
+                {
+                addRow();
+                }
+                item_data.forEach(function(data) {
+                    addRow(data);
+                }) 
+            })
+        } 
+        else{
             item_rows.innerHTML = "";
-            if(item_data.length === 0)
-            {
-               addRow();
-            }
-            item_data.forEach(function(data) {
-                addRow(data);
-            }) 
-        })    
+            addRow();
+        } 
     });
 
     let validation = $('#frm').validate({
@@ -215,7 +223,7 @@
         if(data !== null)
         {
             item_rows.innerHTML +=
-            `<tr class="table_raw" id="raw_${counter}" data-rawindex="${counter}">
+            `<tr class="table_raw"  id="raw_${counter}" data-rawindex="${counter}">
                 <td><input type="text"  id="name[${counter}]" value="${data.name}" class="form-control">
                     <span class="text-danger err_msg" id="all_item.${counter}.item_name"></span>
                 </td>
@@ -225,7 +233,7 @@
                 <td><input type="text" id="stock[${counter}]" value="${data.stock}" class="form-control">
                     <span class="text-danger err_msg" id="all_item.${counter}.item_stock"></span>
                 </td>
-                <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRaw(${counter})">x</button></td>
+                <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRaw(${data.id},${counter})">x</button></td>
             </tr>
             <td><input type="hidden" id="id[${counter}]" value="${data.id}" class="form-control"></td>`
             counter++;
@@ -259,17 +267,24 @@
         }
     }
 
-    function removeRaw(counter_number)
+    function removeRaw(item_id , counter_number)
     { 
-         // Jquery Front-end validation remove
+        // Jquery Front-end validation remove
+        // console.log(validation.settings.rules);
+
         $(document.getElementById(`name[${counter_number}]`)).rules('remove');
         $(document.getElementById(`price[${counter_number}]`)).rules('remove');
         $(document.getElementById(`stock[${counter_number}]`)).rules('remove');
+        
+        raw =document.getElementById(`raw_${counter_number}`).remove();
 
-        document.getElementById(`raw_${counter_number}`).remove();
-
-        // console.log(validation.settings.rules);
+        // axios.get(`/edit-item/${item_id}`)
+        // .then(function (response) {
+        //     let data_item = response.data.item;
+        //     recall();
+        // });
     }
+
 
     function errorReset()
     {

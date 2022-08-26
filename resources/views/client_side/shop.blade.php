@@ -42,14 +42,14 @@
         <div class="row">
             <div class="col-12">
                 <!-- Pagination -->
-                <nav aria-label="navigation">
+                {{-- <nav aria-label="navigation">
                     <ul class="pagination justify-content-end mt-50">
                         <li class="page-item active"><a class="page-link" href="#">01.</a></li>
                         <li class="page-item"><a class="page-link" href="#">02.</a></li>
                         <li class="page-item"><a class="page-link" href="#">03.</a></li>
                         <li class="page-item"><a class="page-link" href="#">04.</a></li>
                     </ul>
-                </nav>
+                </nav> --}}
             </div>
         </div>
     </div>

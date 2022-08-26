@@ -96,6 +96,17 @@ class ItemsController extends Controller
         ],200);
     }
 
+    function itemedit($id)
+    {
+        $item = Items::find($id);
+        $item->delete();
+
+        return response()->json([
+            'item' => $item
+        ]);
+    }
+
+
        // Client side data
 
     public function product()
