@@ -13,12 +13,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach ( $order_detail as  $data)
+                @foreach ($order_detail as  $data)
+                    @foreach ($data->orderdetails as $item )
                     <tr>
-                        <td>{{$data->name}}</td>
-                        <td>{{$data->price}}</td>
+                        <td>{{$item->name}}</td>
+                        <td>{{$item->price}}</td>
                         <td>{{$data->quantity}}</td>
-                    </tr>
+                    </tr>  
+                    @endforeach
                  @endforeach
                 </tbody>
             </table>

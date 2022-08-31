@@ -54,9 +54,9 @@
         {
             axios.get('/view_cart')
             .then(function (response) {
-            let user_data = response.data.cart_data;
+            let cart_data = response.data.cart_data;
             let total = response.data.sub_total.total;
-                alldata=user_data;
+                carts=cart_data;
                 Grand_total= total;
                 reload();
             })
@@ -65,18 +65,20 @@
         function reload()
         {
             cart_data.innerHTML='';
+            console.log(carts);
 
-            alldata.forEach(function(data) { 
+            carts.forEach(function(data) { 
+            data.items.forEach(function(item){
                 cart_data.innerHTML +=
                 `<tr>
                     <td class="cart_product_img">
                         <a href="#"><img src="{{ asset('user/img/product-img/oneplus/9rt.jpeg') }}" alt="Product"></a>
                     </td>
                     <td class="cart_product_desc">
-                        <h5>${data.name}</h5>
+                        <h5>${item.name}</h5>
                     </td>
                     <td class="price">
-                        <span>${data.price}</span>
+                        <span>${item.price}</span>
                     </td>
                     <td class="qty">
                         <div class="qty-btn d-flex">
@@ -90,7 +92,7 @@
                         <button class="btn btn-danger btn-sm" onclick="remove(${data.id})">x</button>
                     </td>
                 </tr>`
-
+                })
             }); 
                 total_text.innerHTML = `${Grand_total ?? '0'}`;
         }
@@ -100,7 +102,7 @@
             axios.get(`/update_cart/${id}/-1`)
             .then(function (response) {
                 user_data = response.data.cart_data;
-                alldata = user_data;
+                carts = user_data;
                 recall();
              });
         }
@@ -110,7 +112,7 @@
             axios.get(`/update_cart/${id}/+1`)
             .then(function (response) {
                 user_data = response.data.cart_data;
-                alldata = user_data;
+                carts = user_data;
                 recall();
             });
         }
@@ -120,7 +122,7 @@
             axios.get(`/deletecart/${id}`)
             .then(function (response) {
                 user_data = response.data.users;
-                alldata=user_data;
+                carts=user_data;
                 recall();
             });
         }

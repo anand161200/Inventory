@@ -19,15 +19,7 @@ class CartController extends Controller
 
     public function viewCart()
     {
-        $all_cart = DB::table('cart')
-        ->select([
-            'cart.*',
-            'items.name',
-            'items.price',
-            'items.stock',
-
-        ])
-        ->join('items', 'cart.item_id', '=', 'items.id')
+        $all_cart = Cart::with('items')
         ->where('user_id', Auth::user()->id)
         ->get();
 
@@ -71,16 +63,7 @@ class CartController extends Controller
     {
         DB::table('cart')->where('id', $item_id)->increment('quantity', $quantity);
 
-        $all_cart = DB::table('cart')
-        ->select([
-            'cart.*',
-            'items.name',
-            'items.price',
-            'items.stock'
-        ])
-        ->join('items', 'cart.item_id', '=', 'items.id')
-        ->where('user_id', Auth::user()->id)
-        ->get();
+        $all_cart = Cart::all();
 
         return response()->json([
             'cart_data' => $all_cart
@@ -93,16 +76,7 @@ class CartController extends Controller
         $delete_cart = Cart::find($cart_id);
         $delete_cart->delete();
 
-        $all_cart = DB::table('cart')
-        ->select([
-            'cart.*',
-            'items.name',
-            'items.price',
-            'items.stock'
-        ])
-        ->join('items', 'cart.item_id', '=', 'items.id')
-        ->get();
-
+        $all_cart = Cart::all();
         return response()->json([
             'cart_data' => $all_cart
         ],200);

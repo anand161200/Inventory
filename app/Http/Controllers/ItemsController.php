@@ -19,18 +19,10 @@ class ItemsController extends Controller
 
     public function itemList()
     {
-        $brand_item = DB::table('items')
-            ->select([
-                'items.*',
-                DB::raw("brands.name AS brand_name")
-            ])
-            ->join('brands', 'items.brand_id', '=', 'brands.id')
-            ->get();
-
-        $group_data = $brand_item->groupBy('brand_name');
-
+        $brands = Brand::with('items')->get();
+         
         return response()->json([
-            'itam' => $group_data
+            'itam' => $brands
         ],200);
     }
 

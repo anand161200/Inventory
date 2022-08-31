@@ -12,4 +12,5 @@ class Items extends Model
     protected $table= 'items';
     
     protected $guarded = [];
+
 }

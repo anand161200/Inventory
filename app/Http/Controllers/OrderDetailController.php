@@ -20,15 +20,8 @@ class OrderDetailController extends Controller
 
     public function checkout()
     {
-        $all_cart = DB::table('cart')
-        ->select([
-            'cart.*',
-            'items.name',
-            'items.price',
-            'items.stock',
-
-        ])
-        ->join('items', 'cart.item_id', '=', 'items.id')
+       
+        $all_cart = Cart::with('items')
         ->where('user_id', Auth::user()->id)
         ->get();
 
@@ -69,15 +62,8 @@ class OrderDetailController extends Controller
         $chekout->amount = $request->amount;
         $chekout->save();
 
-        $all_cart = DB::table('cart')
-        ->select([
-            'cart.*',
-            'items.name',
-            'items.price',
-            'items.stock',
-
-        ])
-        ->join('items', 'cart.item_id', '=', 'items.id')
+         
+        $all_cart = Cart::with('items')
         ->where('user_id', Auth::user()->id)
         ->get();
 
@@ -93,14 +79,8 @@ class OrderDetailController extends Controller
             Cart::find($cart->id)->delete();
         }
 
-        $vieworder = DB::table('order_detail')
-        ->select([
-            'order_detail.*',
-            'quantity',
-            'items.name',
-            'items.price',
-        ])
-        ->join('items', 'order_detail.item_id', '=', 'items.id')
+       
+        $vieworder = OrderDetail::with('orders')
         ->where('checkout_id',$chekout->id)
         ->where('user_id',Auth::user()->id)
         ->get();
@@ -125,14 +105,7 @@ class OrderDetailController extends Controller
 
     public function MyOrderDetails($order_id)
     {
-        $vieworder = DB::table('order_detail')
-        ->select([
-            'order_detail.*',
-            'quantity',
-            'items.name',
-            'items.price',
-        ])
-        ->join('items', 'order_detail.item_id', '=', 'items.id')
+        $vieworder = OrderDetail::with('orderdetails')
         ->where('checkout_id',$order_id)
         ->where('user_id',Auth::user()->id)
         ->get();

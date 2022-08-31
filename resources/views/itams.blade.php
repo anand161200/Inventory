@@ -155,26 +155,27 @@
     
     function reload()
     {
-        let brand_id ='';
         // console.log(@json($brand))
         item_list.innerHTML = "";
-        Object.keys(all_item).forEach(function(key) {
-            let table = `<tr>
-                <td>${key}</td>
+        all_item.forEach(function(brand) {
+            if(brand.items.length > 0)
+            {
+                let table_raw = `<tr>
+                <td>${brand.name}</td>
                 <td>`;
-                    all_item[key].forEach(function(item) {
-                        table += `<span class="badge bg-secondary" style="margin-right: 10px;">
-                            ${item.name}
-                            </span>`;
-                            brand_id = item.brand_id
+                    brand.items.forEach(function(item) {
+                    table_raw += `<span class="badge bg-secondary" style="margin-right: 10px;">
+                        ${item.name}
+                        </span>`;
                     });
-                table +=`</td>
+                table_raw +=`</td>
                 <td>
-                    <button class="btn btn-success btn-sm" onclick="openmodel('${brand_id}')"><i class="fa fa-edit"></i></button>
-                    <button class="btn btn-danger btn-sm" onclick="removeItemList('${brand_id}')"><i class="fa fa-trash"></i></button>
+                    <button class="btn btn-success btn-sm" onclick="openmodel('${brand.id}')"><i class="fa fa-edit"></i></button>
+                    <button class="btn btn-danger btn-sm" onclick="removeItemList('${brand.id}')"><i class="fa fa-trash"></i></button>
                 </td>
             </tr>`;
-            item_list.innerHTML += table;
+            item_list.innerHTML += table_raw;
+            }
         });
     }
 

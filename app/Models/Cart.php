@@ -12,4 +12,9 @@ class Cart extends Model
     protected $table="cart";
 
     protected $guarded = [];
+
+    public function items()
+    {
+        return $this->hasMany(Items::class, 'id', 'item_id'); 
+    }
 }

@@ -18,18 +18,20 @@
                <table class="table">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>Order number</th>
+                        <th>Email</th>
                         <th>Price</th>
-                        <th>quantity</th>
                     </tr>
                 </thead>
                 <tbody>
                 @foreach ( $view_order as  $data)
+                    @foreach ($data->orders as $item )
                     <tr>
-                     <td>{{$data->name}}</td>
-                     <td>{{$data->price}}</td>
-                     <td>{{$data->quantity}}</td>
+                        <td>{{$item->order_number}}</td>
+                        <td>{{$item->email}}</td>
+                        <td>{{$item->amount}}</td>
                     </tr>
+                    @endforeach
                  @endforeach
                 </tbody>
             </table>
