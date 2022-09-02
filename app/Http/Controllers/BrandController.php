@@ -18,6 +18,7 @@ class BrandController extends Controller
             'brand' => Brand::all()
         ],200);
     }
+
     function brandDetails($id)
     {
         $brand_name= Brand::find($id);
@@ -25,7 +26,7 @@ class BrandController extends Controller
             'details'  => $brand_name
         ],200); 
     }
-
+   
     function addOrupdate( Request $request)
     {
          //dd($request->all());

@@ -134,7 +134,7 @@
             name_error.innerHTML ='';
             if(id !== '')
             {
-                axios.get(`/brand-edit/${id}`)
+                axios.get(`/role-edit/${id}`)
                 .then(function (response) {
                     let data = response.data.details;
                     brand_name.value = data.name;

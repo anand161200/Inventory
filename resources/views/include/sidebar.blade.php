@@ -14,6 +14,11 @@
                     Dashboard
                 </a>
                 <div class="sb-sidenav-menu-heading">Interface</div>
+                
+                <a class="nav-link" href="{{ route('user.index') }}">
+                    <div class="sb-nav-link-icon"><i class="fa fa-mobile"></i></div>
+                    User
+                </a>
                 <a class="nav-link" href="{{ route('brand_index') }}">
                     <div class="sb-nav-link-icon"><i class="fa fa-mobile"></i></div>
                     Brand
@@ -21,6 +26,10 @@
                 <a class="nav-link" href="{{ route('itam_index') }}">
                     <div class="sb-nav-link-icon"><i class="fa fa-mobile"></i></div>
                     items
+                </a>
+                <a class="nav-link" href="{{ route('role.index') }}">
+                    <div class="sb-nav-link-icon"><i class="fa fa-mobile"></i></div>
+                    Role
                 </a>
             </div>
         </div>

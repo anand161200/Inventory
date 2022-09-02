@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -14,7 +15,17 @@ class UserDetailSeeder extends Seeder
      */
     public function run()
     {
+        Role::truncate();
+        User::truncate();
         
+        $role_admin = Role::create([
+            'name' => 'admin'
+        ]);
+        
+        $role_user =Role::create([
+            'name' => 'user'
+        ]);
+
         User::create([
             'firstName' => 'admin',
             'lastName' => 'admin',
@@ -23,7 +34,7 @@ class UserDetailSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'phoneNumber' => '9904644459',
             'password' => bcrypt('admin@123'),
-            'role' => 'admin',
+            'role_id' => $role_admin->id
         ]);
 
         User::create([
@@ -34,7 +45,7 @@ class UserDetailSeeder extends Seeder
             'email' => 'user@gmail.com',
             'phoneNumber' => '9904644459',
             'password' => bcrypt('user@123'),
-            'role' => 'user',
+            'role_id' => $role_user->id
         ]);
     }
 }

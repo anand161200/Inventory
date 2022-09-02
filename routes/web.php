@@ -4,7 +4,9 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\OrderDetailController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -84,6 +86,33 @@ Route::get('/',[UserController::class, 'loginForm'])->name('login_form');
 Route::post('/login',[UserController::class, 'login'])->name('login');
 // logout
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+
+
+// Role
+
+Route::prefix('role')->as('role.')->group( function() {
+
+    Route::get('/index',[RoleController::class,'index'])->name('index');
+    Route::get('/role_list',[RoleController::class,'roleList']);
+    Route::get('role-edit/{id}',[RoleController::class,'roleDetails']);
+    Route::post('/role-data',[RoleController::class,'addOrupdate']);
+    Route::post('delete-role',[RoleController::class,'deleteRole']);
+});
+
+// user add update and delete
+Route::prefix('user')->as('user.')->group( function() {
+
+    Route::get('/index',[UserController::class,'index'])->name('index');
+    Route::get('/user_list',[UserController::class,'userList']);
+    Route::get('user-edit/{id}',[UserController::class,'userDetails']);
+    Route::post('/user-data',[UserController::class,'addOrupdate']);
+    Route::post('delete-user',[UserController::class,'deleteUser']);
+});
+
+
+
+
+
 
 
 

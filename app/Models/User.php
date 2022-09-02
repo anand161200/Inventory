@@ -18,4 +18,9 @@ class User extends Authenticatable
 
     protected $guarded = [];
 
+    public  function role()
+    {
+        return $this->hasOne(Role::class , 'id', 'role_id');
+    }
+
 }
