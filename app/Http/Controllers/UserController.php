@@ -33,6 +33,8 @@ class UserController extends Controller
             'cofirm_password' => 'required|same:password',
         ]);
 
+        $role = Role::where('name','=','user')->first();
+
         $user = new User();
         $user->firstName = $request->firstName;
         $user->lastName = $request->lastName;
@@ -41,6 +43,7 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->phoneNumber = $request->phoneNumber;
         $user->password = bcrypt($request->password);
+        $user->role_id = $role->id;
         $user->save();
 
         return redirect()->route('login_form');
@@ -53,6 +56,8 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
+        $admin = Role::where('name','=','admin')->first();
+      
         $request->validate([
 
             'email' => 'required',
@@ -63,10 +68,10 @@ class UserController extends Controller
 
         if(Auth::attempt($credentials))
         {
-            // if(Auth::user()->role == 'admin')
-            // {
-            //     return redirect()->route('index');
-            // }
+            if(Auth::user()->role_id == $admin->id)
+            {
+                return redirect()->route('index');
+            }
             
             return redirect()->route('home');
         }
@@ -102,7 +107,6 @@ class UserController extends Controller
         return response()->json([
             'details'  => $user_data,
         ],200); 
-
     }
 
     function addOrupdate(Request $request)
@@ -144,5 +148,4 @@ class UserController extends Controller
             'data' => $deleterecord 
         ],200);
     }
-
 }

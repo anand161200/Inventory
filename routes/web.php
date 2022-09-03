@@ -4,6 +4,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\OrderDetailController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
@@ -20,8 +21,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-// Route:: prefix('admin')->middleware('auth','isAdmin')->group( function () {
 
 Route::get('/dashbord', function () {
     return view('dashbord');
@@ -45,9 +44,6 @@ Route::get('/item-details/{id}',[ItemsController::class,'itemDetails']);
 Route::get('/delete-item/{id}',[ItemsController::class,'itemDelete']);
 Route::get('/edit-item/{id}',[ItemsController::class,'itemedit']);
 
-// });
-
-// Route:: prefix('user')->middleware('auth','isUser')->group( function () {
 
 // client side
 Route::get('/user_layout', function () {return view('client_side.include.user_layout');});
@@ -75,8 +71,6 @@ Route::get('thankyou', [OrderDetailController::class, 'thankyou'])->name('thanky
 Route::get('myorder', [OrderDetailController::class, 'myOrder'])->name('myorder');
 Route::get('my_order_details/{order_id}', [OrderDetailController::class, 'MyOrderDetails'])->name('My_order_details');
 
-// });
-
 //Register
 Route::get('/register_form',[UserController::class, 'registerForm'])->name('register_form');
 Route::post('register',[UserController::class,'register'])->name('register');
@@ -89,7 +83,6 @@ Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
 
 // Role
-
 Route::prefix('role')->as('role.')->group( function() {
 
     Route::get('/index',[RoleController::class,'index'])->name('index');
@@ -108,6 +101,8 @@ Route::prefix('user')->as('user.')->group( function() {
     Route::post('/user-data',[UserController::class,'addOrupdate']);
     Route::post('delete-user',[UserController::class,'deleteUser']);
 });
+
+Route::get('/permission',[PermissionController::class,'permission'])->name('permission');
 
 
 

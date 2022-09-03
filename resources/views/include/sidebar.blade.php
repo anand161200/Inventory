@@ -31,6 +31,10 @@
                     <div class="sb-nav-link-icon"><i class="fa fa-mobile"></i></div>
                     Role
                 </a>
+                <a class="nav-link" href="{{ route('permission') }}">
+                    <div class="sb-nav-link-icon"><i class="fa fa-mobile"></i></div>
+                    Permission
+                </a>
             </div>
         </div>
     </nav>

@@ -12,4 +12,9 @@ class Role extends Model
     protected $table="roles";
 
     protected $guarded = [];
+
+    public function permission()
+    {
+        return $this->belongsToMany(permission::class,'role_permission' , 'role_id', 'permission_id');
+    }
 }
