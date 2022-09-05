@@ -49,6 +49,7 @@
                         </div>
                     </div>
                 </div>
+                @include('role_permission.view')
                 <table class="table table-bordered">
                     <thead class="bg-light">
                         <tr>
@@ -63,7 +64,6 @@
         </div>
     </div>
 </main>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 
@@ -72,11 +72,15 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
     let myModal = new bootstrap.Modal(document.getElementById("myModal"), {});
+    let view_modal = new bootstrap.Modal(document.getElementById("view_modal"), {});
     let role_details = document.getElementById('role_details');
     let role_name = document.getElementById('name');
     let name_error = document.getElementById('role');
 
+    let permission_raw = document.getElementById('permissions');
+
     let title_text = document.getElementById('title_text');
+    let role_text = document.getElementById('role_text');
     let button_text = document.getElementById('button_text');
     let roles='';
     let role_id='';
@@ -119,7 +123,8 @@
         `<tr>
             <td>${element.name}</td>
             <td>
-                <button class="btn btn-success btn-sm" onclick="openmodel(${element.id})"><i class="fa fa-edit"></i></button>
+                <button class="btn btn-primary btn-sm" onclick="openmodel(${element.id})"><i class="fa fa-edit"></i></button>
+                <button class="btn btn-success btn-sm" onclick="view(${element.id})"><i class="fa fa-eye" aria-hidden="true"></i></button>
                 <button class="btn btn-danger btn-sm" onclick="remove(${element.id})"><i class="fa fa-trash"></i></button>
             </td>
             </tr>`   
@@ -151,6 +156,7 @@
     }
     function closemodel() {
         myModal.hide();
+        view_modal.hide();
     }
 
     function FromSubmit()
@@ -218,7 +224,31 @@
                     }) 
                 })   
             }
+        }) 
+    }
+    function view(id)
+    {
+        axios.get(`/rolePermission/${id}`)
+        .then(function(response){
+            permission_raw.innerHTML = '';
+            role = response.data.role_permission;
+            all_permission = response.data.all_permission;
+            let  permissions = role.permission
+
+            role_text.innerHTML = `Role :- ${role.name}`;
+
+            all_permission.forEach(function(data, index){
+                findvalue = permissions.findIndex((item) => item.id ===  all_permission[index].id); 
+                permission_raw.innerHTML += 
+                `<tr>
+                    <td>${data.permission}</td>
+                    <td>${findvalue < 0 ? '<i class="fa fa-times text-danger" aria-hidden="true"></i>' : 
+                        '<i class="fa fa-check text-success" aria-hidden="true"></i>' }</td>
+                </tr>`;
+            })
+            //<input type="checkbox" ${findvalue < 0 ? '':'checked'}>
         })
+        view_modal.show();
     }
 </script>
 @endsection

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,7 @@ class RoleController extends Controller
 {
     function index()
     {
-        return view('Role.index');
+        return view('role_permission.index');
     }
 
     public function roleList()

@@ -33,7 +33,7 @@
                 </a>
                 <a class="nav-link" href="{{ route('permission') }}">
                     <div class="sb-nav-link-icon"><i class="fa fa-mobile"></i></div>
-                    Permission
+                    permission
                 </a>
             </div>
         </div>

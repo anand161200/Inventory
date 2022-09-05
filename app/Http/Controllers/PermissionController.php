@@ -2,19 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
 
 class PermissionController extends Controller
 {
-    public function permission()
+
+    public function rolePermission($id)
     {
-        $permission = Role::with('permission')->get();
+        $permission = Role::with('permission')
+        ->where('id',$id)
+        ->first();
 
-        // dd($permission->toArray());
+        return response()->json([
+            'role_permission'  => $permission,
+            'all_permission'  => Permission::all()
 
-        return view('permission.permission')->with([
-           'permisson' => $permission  
-        ]);
+        ],200); 
+    }
+
+    function permission()
+    {
+        return view('role_permission.role_permission');
+    }
+
+    function checkPermission()
+    {
+        return response()->json([
+            'all_permission'  => Permission::all()
+        ],200);  
     }
 }

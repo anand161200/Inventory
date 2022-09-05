@@ -103,6 +103,9 @@ Route::prefix('user')->as('user.')->group( function() {
 });
 
 Route::get('/permission',[PermissionController::class,'permission'])->name('permission');
+Route::get('/rolePermission/{id}',[PermissionController::class,'rolePermission']);
+Route::get('/checkPermission',[PermissionController::class,'checkPermission']);
+
 
 
 
