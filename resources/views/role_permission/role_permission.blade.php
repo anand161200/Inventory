@@ -23,11 +23,14 @@
                 </div>
             </div>
             <div class="card-body">
+                {{-- @dump($all_role); --}}
                 <table class="table table-bordered">
                     <thead class="bg-light">
                         <tr>
                             <th>Permission</th>
-                            <th>Role</th>
+                            @foreach ( $all_role as $data )
+                            <th>{{$data->name}}</th>  
+                            @endforeach
                         </tr>
                     </thead>
                     <tbody id="permission_raw">

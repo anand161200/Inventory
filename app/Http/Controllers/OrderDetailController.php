@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OrderDetailsFromRequest;
 use App\Models\Cart;
 use App\Models\checkout;
 use App\Models\Items;
@@ -39,17 +40,9 @@ class OrderDetailController extends Controller
         ],200);
     }
 
-    public function storeOrder(Request $request)
+    public function storeOrder(OrderDetailsFromRequest $request)
     {
-        $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required',
-            'address' => 'required',
-            'zipCode' => 'required',
-            'contact' => 'required'
-        ]);
-
+       
         $chekout = new checkout();
         $chekout->order_number = time();
         $chekout->user_id = Auth::user()->id;
@@ -61,7 +54,6 @@ class OrderDetailController extends Controller
         $chekout->contact = $request->contact;
         $chekout->amount = $request->amount;
         $chekout->save();
-
          
         $all_cart = Cart::with('items')
         ->where('user_id', Auth::user()->id)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BrandFromRequest;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 
@@ -27,18 +28,10 @@ class BrandController extends Controller
         ],200); 
     }
    
-    function addOrupdate( Request $request)
+    function addOrupdate(BrandFromRequest $request)
     {
-         //dd($request->all());
-
-         $request->validate([
-            'brand' => 'required|unique:brands,name,'.$request->id,
-        ]);
-
         $brand = $request->id !== null ? Brand::find($request->id) : new Brand();
-        $brand->fill([
-            'name'=>$request->brand,
-        ])->save();
+        $brand->fill($request->getRequestFiled())->save();
 
         return response()->json([
             'Record add and update successfully'  

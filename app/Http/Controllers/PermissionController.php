@@ -24,13 +24,15 @@ class PermissionController extends Controller
 
     function permission()
     {
-        return view('role_permission.role_permission');
+        return view('role_permission.role_permission')->with([
+            'all_role' => Role::all()
+        ]);
     }
 
     function checkPermission()
     {
         return response()->json([
-            'all_permission'  => Permission::all()
+            'all_permission'  => Permission::all(),
         ],200);  
     }
 }

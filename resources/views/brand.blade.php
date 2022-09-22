@@ -37,9 +37,14 @@
                             <div class="modal-body p-4">
                                 <form id="frm">
                                     <div class="mb-3">
-                                    <label class="form-label">Name</label>
-                                    <input type="text" id="name" name="name" class="form-control">
-                                    <span class="text-danger" id="brand"></span>
+                                        <label class="form-label">Name</label>
+                                        <input type="text" id="name" name="name" class="form-control">
+                                        <span class="text-danger" id="brand"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">email</label>
+                                        <input type="text" id="email_id" name="email" class="form-control">
+                                        <span class="text-danger" id="email"></span>
                                     </div>
                                 </form>
                             </div>
@@ -76,6 +81,9 @@
         let myModal = new bootstrap.Modal(document.getElementById("myModal"), {});
         let brand_name = document.getElementById('name');
         let name_error = document.getElementById('brand');
+
+        let email = document.getElementById('email_id');
+        let email_error = document.getElementById('email');
 
         // Title tax
         let title_text = document.getElementById('title_text');
@@ -159,12 +167,12 @@
 
         function FromSubmit()
         { 
-            //console.log(brand_id);
             if(validation.form())
             {
                 axios.post('/brand-data',{
                 'id' : brand_id,
-                'brand' : brand_name.value,    
+                'brand' : brand_name.value,  
+                'email'  : email.value,
                 })
                 .then(function (response) {
                     closemodel();

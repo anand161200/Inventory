@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserFromRequest;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,20 +20,8 @@ class UserController extends Controller
         return view('auth.register'); 
     }
     
-    public function register(Request $request)
+    public function register(UserFromRequest $request)
     {
-        $request->validate([
-            
-            'firstName' => 'required',
-            'lastName' => 'required',
-            'address' => 'required',
-            'Gender' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'phoneNumber' => 'required|numeric',
-            'password' => 'required',
-            'cofirm_password' => 'required|same:password',
-        ]);
-
         $role = Role::where('name','=','user')->first();
 
         $user = new User();

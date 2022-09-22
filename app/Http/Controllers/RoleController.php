@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RoleFromRequest;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -28,16 +29,10 @@ class RoleController extends Controller
         ],200); 
     }
 
-    function addOrupdate( Request $request)
+    function addOrupdate(RoleFromRequest $request)
     {
-         $request->validate([
-            'role' => 'required|unique:roles,name,'.$request->id,
-        ]);
-
         $role = $request->id !== null ? Role::find($request->id) : new Role();
-        $role->fill([
-            'name'=>$request->role,
-        ])->save();
+        $role->fill($request->getRequestFiled())->save();
 
         return response()->json([
             'Record add and update successfully'  
